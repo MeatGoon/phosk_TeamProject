@@ -55,4 +55,10 @@ public class TestMapperImpl implements TestMapper {
 	public int chkDel(String menueVO) {
 		return session.delete("menueDelete", menueVO);
 	}
+
+	@Override
+	public int insrtCategory(CategoryVO categoryVO) {
+		return session.insert("insrtCategory", categoryVO);
+	}
+
 }

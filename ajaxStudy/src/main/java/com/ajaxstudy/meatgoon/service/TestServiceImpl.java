@@ -54,4 +54,9 @@ public class TestServiceImpl implements TestService {
 	public int chkDel(String menueVO) {
 		return testMapper.chkDel(menueVO);
 	}
+
+	@Override
+	public int insrtCategory(CategoryVO categoryVO) {
+		return testMapper.insrtCategory(categoryVO);
+	}
 }

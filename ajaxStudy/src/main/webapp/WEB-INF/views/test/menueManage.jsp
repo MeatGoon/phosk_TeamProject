@@ -13,6 +13,7 @@
 <style>
 div {
 	margin: 0 auto;
+	display: block;
 }
 
 .categoryCon, .menueContainer, .menueInfo_container, .category_names {
@@ -43,11 +44,14 @@ button {
 	justify-content: center;
 }
 
+.categoryCon, .menueContainer {
+	overflow: auto;
+}
+
 .menueContainer {
 	width: 700px;
 	float: right;
 	height: 100%;
-	overflow: auto;
 }
 
 #detailMenue_open, #checked_menue {
@@ -143,12 +147,17 @@ button {
 
 												if (test123 == carNum) {
 													console.log("아니 여기옴?");
-													$(".menueContainer")
+													$(".menue_eachform")
 															.prepend(
 																	"<div class='menueInfo_container'>"
-																			+ "<button name='${meList.menue_name}/${meList.category_num}' id='detailMenue_open'>상세보기</button>"
+																			+ "<div>"
+																			+ "<button name='${meList.menue_name}' value='${meList.category_num}' id='detailMenue_open'>상세보기</button>"
+																			+ "</div>"
+																			+ "<div>"
+																			+ "<input type='checkbox' name='menue_name' id='checked_menue' value='${meList.menue_name}' />"
+																			+ "</div>"
 																			+ "<div class='menueInfo menueInfo_top'>"
-																			+ "<span class='menue_text menue_text_top menue_info_name'>음식명 : ${meList.menue_name}</span>"
+																			+ "<span class='menue_text menue_text_top menue_info_name'>음식명 : ${meList.menue_name}</span> "
 																			+ "<span class='menue_text menue_text_top menue_info_price'>가격 : <fmt:formatNumber value='${meList.menue_price}'></fmt:formatNumber>&nbsp;원</span>"
 																			+ "</div>"
 																			+ "<div class='menueInfo menueInfo_bottom'>"
@@ -168,46 +177,51 @@ button {
 	<h1>메뉴관리페이지입니다</h1>
 	<div class="mainContainer">
 		<div class="categoryCon">
-			<c:forEach items="${cateList}" var="cateList">
-				<button value="${cateList.category_num}" class="category_names"
-					style="color: blue;">${cateList.category_name}</button>
-			</c:forEach>
+			<div>
+				<button id="add_cate_btn">카테고리 추가</button>
+			</div>
+			<div class="categort_btns">
+				<c:forEach items="${cateList}" var="cateList">
+					<button value="${cateList.category_num}" class="category_names"
+						style="color: blue;">${cateList.category_name}</button>
+				</c:forEach>
+			</div>
 		</div>
 		<div class="menueContainer">
 			<div>
 				<input type="text" value="카테고리 이름이 들어갈 자리입니다." />
 				<button>수정</button>
+				<button value="">삭제</button> <!-- value의 값은 ajax 혹은 moveForm 이용하여 카테고리 불러올 예정 -->
 				* 현재 기능 미구현
 			</div>
-			<c:forEach items='${meList}' var='meList'>
-				<c:if test='${meList.category_num eq 2}'>
-					<div class='menueInfo_container'>
-						<div>
-							<button name="${meList.menue_name}/${meList.category_num}"
-								id="detailMenue_open">상세보기</button>
+			<div class="menue_eachform">
+				<c:forEach items='${meList}' var='meList'>
+					<c:if test='${meList.category_num eq 2}'>
+						<div class='menueInfo_container'>
+							<div>
+								<button name="${meList.menue_name}/${meList.category_num}"
+									id="detailMenue_open">상세보기</button>
+							</div>
+							<div>
+								<input type="checkbox" name="menue_name" id="checked_menue"
+									value="${meList.menue_name}" />
+							</div>
+							<div class="menueInfo menueInfo_top">
+								<span class="menue_text menue_text_top menue_info_name">음식명
+									: ${meList.menue_name}</span> <span
+									class="menue_text menue_text_top menue_info_price">가격 :
+									<fmt:formatNumber value="${meList.menue_price}"></fmt:formatNumber>&nbsp;원
+								</span>
+							</div>
+							<div class="menueInfo menueInfo_bottom">
+								<span class="menue_text menue_info_detail">${meList.etc}</span>
+							</div>
 						</div>
-						<div>
-							<input type="checkbox" name="menue_name" id="checked_menue"
-								value="${meList.menue_name}" />
-						</div>
-						<div class="menueInfo menueInfo_top">
-							<span class="menue_text menue_text_top menue_info_name">음식명
-								: ${meList.menue_name}</span> <span
-								class="menue_text menue_text_top menue_info_price">가격 : <fmt:formatNumber
-									value="${meList.menue_price}"></fmt:formatNumber>&nbsp;원
-							</span>
-						</div>
-						<div class="menueInfo menueInfo_bottom">
-							<span class="menue_text menue_info_detail">${meList.etc}</span>
-						</div>
-					</div>
-				</c:if>
-			</c:forEach>
-			<button id="insert_btn" onclick="deleteChecked();">선택 삭제</button>
-			<!-- 메뉴관리 페이지에 옮길 예정 이며 카테고리 값이 없어도.. 게시판처럼 기준 vo객체를 생성후 이용한다면 가능할지도..?-->
-
+					</c:if>
+				</c:forEach>
+			</div>
+			<button id="checked_btn" onclick="deleteChecked();">선택 삭제</button>
 		</div>
-		<div></div>
 	</div>
 	<div id="modal" style="display: none">
 		<div class="modal_content">
@@ -218,8 +232,7 @@ button {
 		</div>
 		<div class="modal_layer"></div>
 	</div>
-
-	<form id="moveForm" method="get">
+	<form id="moveForm" method="post">
 		<!-- 추후 게시판처럼 기준vo 객체를 생성한다면 사용하게될 form -->
 	</form>
 	<!-- 모달 jquery -->
@@ -262,6 +275,17 @@ button {
 		$("#detailMenue_close").click(function() {
 			$("#modal").fadeOut();
 		});
+		$('#add_cate_btn')
+				.on(
+						'click',
+						function() {
+							let form = $('#moveForm');
+							form.attr('action', '/test/insrtCategory');
+							form
+									.append("<input type='hidden' name='category_name' value='새 카테고리'>");
+							form.submit();
+						});
+
 		function deleteChecked() {
 			var checkedbtn = new Array();
 			$("input:checkbox[name='menue_name']:checked").each(function() {
@@ -269,15 +293,15 @@ button {
 				console.log(checkedbtn);
 			});
 			$.ajax({
-				url : "/test/deleteChk",
-				type : "POST",
-				traditional : true,
+				url : "/test/deleteChk", // controller에서 설정해둔 postmapping의 url
+				type : "POST", // controller 의 mapping 타입이 Get 인지 Post 인지 설정
+				traditional : true, // 전통성 ex) true = checkedbtn='볶음밥', false = checkedbtn[]='볶음밥'
 				data : {
 					checkedbtn : checkedbtn
 				},
 				success : function(testdata) {
 					if (testdata = 1) {
-						alert('삭제완료');
+						alert(checkedbtn.length + '개의 메뉴가 삭제 되었습니다.');
 					}
 					location.reload();
 				}

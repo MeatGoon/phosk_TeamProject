@@ -90,6 +90,14 @@ public class AjaxController {
 		testService.insert(menueVO);
 		rttr.addFlashAttribute("result", "insert success");
 		return "redirect:/test/cateList";
-
 	}
+	
+	@PostMapping("/insrtCategory")
+	public String insrtCategory(CategoryVO categoryVO, RedirectAttributes rttr) {
+		testService.insrtCategory(categoryVO);
+		rttr.addFlashAttribute("result", "insert success");
+		return "redirect:/test/menueManage"; 
+		/* ajax로 수정 */
+	}
+	
 }

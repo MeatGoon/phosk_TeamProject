@@ -21,4 +21,6 @@ public interface TestService {
 	public int insert(MenueVO menueVO);
 
 	public int chkDel(String menueVO);
+
+	public int insrtCategory(CategoryVO categoryVO);
 }

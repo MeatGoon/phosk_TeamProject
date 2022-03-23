@@ -13,6 +13,7 @@
 <style>
 div {
 	margin: 0 auto;
+	display: block;
 }
 
 .categoryCon, .menueContainer, .menueInfo_container, .category_names {
@@ -48,6 +49,15 @@ button {
 	float: right;
 	height: 100%;
 	overflow: auto;
+}
+
+#insert_btn{
+	width: 100%;
+	margin: 0 auto;
+}
+
+#manage_btn{
+	display: block;
 }
 
 #detailMenue_open {
@@ -136,10 +146,10 @@ button {
 
 												if (test123 == carNum) {
 													console.log("아니 여기옴?");
-													$(".menueContainer")
+													$(".menue_eachform")
 															.prepend(
 																	"<div class='menueInfo_container'>"
-																			+ "<button name='${meList.menue_name}/${meList.category_num}' id='detailMenue_open'>상세보기</button>"
+																			+ "<button name='${meList.menue_name}' value='${meList.category_num}' id='detailMenue_open'>상세보기</button>"
 																			+ "<div class='menueInfo menueInfo_top'>"
 																			+ "<span class='menue_text menue_text_top menue_info_name'>음식명 : ${meList.menue_name}</span>"
 																			+ "<span class='menue_text menue_text_top menue_info_price'>가격 : <fmt:formatNumber value='${meList.menue_price}'></fmt:formatNumber>&nbsp;원</span>"
@@ -154,8 +164,7 @@ button {
 												}
 												console.log("실행중");
 												</c:forEach>
-												
-												
+
 											});
 						});
 	</script>
@@ -168,29 +177,33 @@ button {
 			</c:forEach>
 		</div>
 		<div class="menueContainer">
-			<button id="manage_btn">메뉴관리</button>
-			<c:forEach items='${meList}' var='meList'>
-				<c:if test='${meList.category_num eq 2}'>
-					<div class='menueInfo_container'>
-						<button name="${meList.menue_name}/${meList.category_num}" id="detailMenue_open">상세보기</button>
-						<div class="menueInfo menueInfo_top">
-							<span class="menue_text menue_text_top menue_info_name">음식명
-								: ${meList.menue_name}</span> <span
-								class="menue_text menue_text_top menue_info_price">가격 : <fmt:formatNumber
-									value="${meList.menue_price}"></fmt:formatNumber>&nbsp;원
-							</span>
+			<div class="manage_con">
+				<button id="manage_btn">메뉴관리</button>
+			</div>
+			<div class="menue_eachform">
+				<c:forEach items='${meList}' var='meList'>
+					<c:if test='${meList.category_num eq 2}'>
+						<div class='menueInfo_container'>
+							<button name="${meList.menue_name}"
+								value="${meList.category_num}" id="detailMenue_open">상세보기</button>
+							<div class="menueInfo menueInfo_top">
+								<span class="menue_text menue_text_top menue_info_name">음식명
+									: ${meList.menue_name}</span> <span
+									class="menue_text menue_text_top menue_info_price">가격 :
+									<fmt:formatNumber value="${meList.menue_price}"></fmt:formatNumber>&nbsp;원
+								</span>
+							</div>
+							<div class="menueInfo menueInfo_bottom">
+								<span class="menue_text menue_info_detail">${meList.etc}</span>
+							</div>
 						</div>
-						<div class="menueInfo menueInfo_bottom">
-							<span class="menue_text menue_info_detail">${meList.etc}</span>
-						</div>
-					</div>
-				</c:if>
-			</c:forEach>
-			<button id="insert_btn">메뉴등록</button><!-- 메뉴관리 페이지에 옮길 예정 이며 카테고리 값이 없어도.. 게시판처럼 기준 vo객체를 생성후 이용한다면 가능할지도..?-->
-
-		</div>
-		<div>
-		
+					</c:if>
+				</c:forEach>
+			</div>
+			<div>
+			<button id="insert_btn">메뉴등록</button>
+			<!-- 메뉴관리 페이지에 옮길 예정 이며 카테고리 값이 없어도.. 게시판처럼 기준 vo객체를 생성후 이용한다면 가능할지도..?-->
+			</div>
 		</div>
 	</div>
 	<div id="modal" style="display: none">
@@ -203,31 +216,39 @@ button {
 		<div class="modal_layer"></div>
 	</div>
 
-<form id="moveForm" method="get">
-<!-- 추후 게시판처럼 기준vo 객체를 생성한다면 사용하게될 form -->
-</form>
+	<form id="moveForm" method="get">
+		<!-- 추후 게시판처럼 기준vo 객체를 생성한다면 사용하게될 form -->
+
+	</form>
 	<!-- 모달 jquery -->
 	<script>
-		$(document).ready(function() {
-			$(document).on('click','button[id="detailMenue_open"]',
-				function(e) {
-				/* 페이지 이동 테스트중 */
-				e.preventDefault();
-				let moveForm = $("#moveForm");
-				var test22 = $(this).attr('name');
-				test22 = test22.split("/");
-				$(".menue_info_name").find("span");
-				console.log(test22[0]);
-				console.log(test22[1]);
-				moveForm.append("<input type='hidden' name='category_num' value='"+ test22[1] + "'>");
-				moveForm.append("<input type='hidden' name='menue_name' value='"+ test22[0] + "'>");
-				moveForm.attr("action", "/test/detailInfo");
-				moveForm.submit();
-				/* $("#modal").fadeIn(); */
+		$(document)
+				.ready(
+						function() {
+							$(document)
+									.on(
+											'click',
+											'button[id="detailMenue_open"]',
+											function(e) {
+												/* 페이지 이동 테스트중 */
+												e.preventDefault();
+												let moveForm = $("#moveForm");
+												var menueName = $(this).attr(
+														'name');
+												var cateNum = $(this).val();
+												moveForm
+														.append("<input type='hidden' name='category_num' value='"+ cateNum + "'>");
+												moveForm
+														.append("<input type='hidden' name='menue_name' value='"+ menueName + "'>");
+												moveForm.attr("action",
+														"/test/detailInfo");
+												moveForm.submit();
+												location.reload();
+												/* $("#modal").fadeIn(); */
 
-				/* 또다시 foreach를 사용하면 데이터 사용낭비가 심함 */
-				});
-			});
+												/* 또다시 foreach를 사용하면 데이터 사용낭비가 심함 */
+											});
+						});
 		$('#insert_btn').on('click', function() {
 			window.location.href = "/test/insertMenue"
 		});
@@ -235,7 +256,7 @@ button {
 		$('#manage_btn').on('click', function() {
 			window.location.href = "/test/menueManage"
 		});
-		
+
 		$("#detailMenue_close").click(function() {
 			$("#modal").fadeOut();
 		});

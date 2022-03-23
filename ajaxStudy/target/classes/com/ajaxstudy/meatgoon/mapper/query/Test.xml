@@ -25,4 +25,7 @@
 	<insert id="menueInsert">
 		insert into ajaxmenue values(#{category_num}, #{menue_name}, #{menue_price}, #{etc})
 	</insert>
+	<insert id="insrtCategory">
+		insert into ajaxcategory values(SEQ_CATE.nextval, #{category_name})
+	</insert>
 </mapper>

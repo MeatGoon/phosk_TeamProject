@@ -21,4 +21,6 @@ public interface TestMapper {
 	int insert(MenueVO menueVO);
 
 	int chkDel(String menueVO);
+
+	int insrtCategory(CategoryVO categoryVO);
 }
