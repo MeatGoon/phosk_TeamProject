@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ajaxstudy.meatgoon.mapper.TestMapper">
+<!-- 	<select id="boList"  resultType="boVO">
+		select * from testajax
+	</select> -->
+	<select id="cateList"  resultType="cateVO">
+		select * from ajaxcategory
+	</select>
+	<select id="meList"  resultType="meVO">
+		select * from ajaxmenue
+	</select>
+	<select id="getMenue" resultType="meVO">
+		<!-- select * from ajaxmenue WHERE menue_name = #{menue_name} -->
+		select * from ajaxmenue where menue_name = #{menue_name}
+	</select>
+	<update id="menueModify">
+		update ajaxmenue set menue_name = #{test_menue_name}, menue_price = #{menue_price}, etc = #{etc} where menue_name = #{menue_name}
+	</update>
+	<delete id="menueDelete">
+		delete ajaxmenue where menue_name = #{menue_name}
+	</delete>
+	<insert id="menueInsert">
+		insert into ajaxmenue values(#{category_num}, #{menue_name}, #{menue_price}, #{etc})
+	</insert>
+</mapper>
