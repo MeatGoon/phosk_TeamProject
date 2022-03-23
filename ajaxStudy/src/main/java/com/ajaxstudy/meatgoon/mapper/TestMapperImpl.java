@@ -48,6 +48,11 @@ public class TestMapperImpl implements TestMapper {
 
 	@Override
 	public int insert(MenueVO menueVO) {
-		return session.delete("menueInsert", menueVO);
+		return session.insert("menueInsert", menueVO);
+	}
+
+	@Override
+	public int chkDel(String menueVO) {
+		return session.delete("menueDelete", menueVO);
 	}
 }

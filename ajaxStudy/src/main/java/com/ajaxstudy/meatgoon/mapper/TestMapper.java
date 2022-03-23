@@ -19,4 +19,6 @@ public interface TestMapper {
 	int delete(MenueVO menueVO);
 
 	int insert(MenueVO menueVO);
+
+	int chkDel(String menueVO);
 }

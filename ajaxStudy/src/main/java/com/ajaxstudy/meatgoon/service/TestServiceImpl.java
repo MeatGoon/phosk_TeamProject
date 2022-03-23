@@ -49,4 +49,9 @@ public class TestServiceImpl implements TestService {
 	public int insert(MenueVO menueVO) {
 		return testMapper.insert(menueVO);
 	}
+
+	@Override
+	public int chkDel(String menueVO) {
+		return testMapper.chkDel(menueVO);
+	}
 }

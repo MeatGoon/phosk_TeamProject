@@ -62,19 +62,21 @@ public class AjaxController {
 		rttr.addFlashAttribute("result", "modify success");
 		return "redirect:/test/cateList";
 	}
-
 	@PostMapping("/delete")
 	public String menueDelete(MenueVO menueVO, RedirectAttributes rttr) {
 		testService.delete(menueVO);
 		rttr.addFlashAttribute("result", "delete success");
 		return "redirect:/test/cateList";
 	}
-	/*
-	 * @PostMapping("/deleteChk") public String menueDelete(HttpServletRequest
-	 * request) { String[] ajaxData = request.getParameterValues("checkedbtn"); for
-	 * (int i = 0; i < ajaxData.length; i++) { testService.chkDel(ajaxData[i]); }
-	 * return "redirect:/test/insertMenue"; }
-	 */
+
+	@PostMapping("/deleteChk")
+	public String menueDelete(HttpServletRequest request) {
+		String[] ajaxData = request.getParameterValues("checkedbtn");
+		for (int i = 0; i < ajaxData.length; i++) {
+			testService.chkDel(ajaxData[i]);
+		}
+		return "redirect:/test/menueManage";
+	}
 
 	@GetMapping("/insertMenue")
 	public void insertMenue(Model model) {
@@ -82,11 +84,12 @@ public class AjaxController {
 		List<CategoryVO> cateList = testService.cateList();
 		model.addAttribute("cateList", cateList);
 	}
+
 	@PostMapping("/insertMenue")
 	public String insertMenue(MenueVO menueVO, RedirectAttributes rttr) {
 		testService.insert(menueVO);
 		rttr.addFlashAttribute("result", "insert success");
 		return "redirect:/test/cateList";
-		
+
 	}
 }

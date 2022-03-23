@@ -19,4 +19,6 @@ public interface TestService {
 	public int delete(MenueVO menueVO);
 
 	public int insert(MenueVO menueVO);
+
+	public int chkDel(String menueVO);
 }

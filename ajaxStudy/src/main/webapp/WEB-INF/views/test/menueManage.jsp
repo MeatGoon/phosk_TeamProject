@@ -203,7 +203,7 @@ button {
 					</div>
 				</c:if>
 			</c:forEach>
-			<button id="insert_btn">메뉴등록</button>
+			<button id="insert_btn" onclick="deleteChecked();">선택 삭제</button>
 			<!-- 메뉴관리 페이지에 옮길 예정 이며 카테고리 값이 없어도.. 게시판처럼 기준 vo객체를 생성후 이용한다면 가능할지도..?-->
 
 		</div>
@@ -254,9 +254,6 @@ button {
 												/* 또다시 foreach를 사용하면 데이터 사용낭비가 심함 */
 											});
 						});
-		$('#insert_btn').on('click', function() {
-			window.location.href = "/test/insertMenue"
-		});
 
 		$('#manage_btn').on('click', function() {
 			window.location.href = "/test/menueManage"
@@ -265,36 +262,27 @@ button {
 		$("#detailMenue_close").click(function() {
 			$("#modal").fadeOut();
 		});
- 		$(document).ready(
-				function() {
-					$(document).on(
-							'click',
-							"input:checkbox[name='menue_name']",
-							function() {
-								var checkedbtn = new Array();
-								$("input:checkbox[name='menue_name']:checked")
-										.each(function() {
-											checkedbtn.push($(this).val());
-											console.log(checkedbtn);
-										});
-/* 								$.ajax({
-									url : "/test/deleteChk",
-									type : "POST",
-									tranditional: true,
-									data : {
-										checkedbtn : checkedbtn
-									},
-									successs : funtion(data){
-										if(data = 1){
-											alert('ajax성공');
-										}else{
-											alert('실패');
-										}
-									}
-								}); */
-							});
-				});
-					
+		function deleteChecked() {
+			var checkedbtn = new Array();
+			$("input:checkbox[name='menue_name']:checked").each(function() {
+				checkedbtn.push($(this).val());
+				console.log(checkedbtn);
+			});
+			$.ajax({
+				url : "/test/deleteChk",
+				type : "POST",
+				traditional : true,
+				data : {
+					checkedbtn : checkedbtn
+				},
+				success : function(testdata) {
+					if (testdata = 1) {
+						alert('삭제완료');
+					}
+					location.reload();
+				}
+			});
+		}
 	</script>
 </body>
 </html>
