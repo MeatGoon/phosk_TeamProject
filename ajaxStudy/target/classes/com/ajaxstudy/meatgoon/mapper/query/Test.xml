@@ -9,7 +9,7 @@
 	<select id="meList"  resultType="meVO">
 		select * from ajaxmenue
 	</select>
-	<select id="getMenue" resultType="meVO">
+	<select id="detailInfo" resultType="meVO">
 		select * from ajaxmenue where menue_name = #{menue_name}
 	</select>
 	<update id="menueModify">
@@ -24,4 +24,7 @@
 	<insert id="insrtCategory">
 		insert into ajaxcategory values(SEQ_CATE.nextval, #{category_name})
 	</insert>
+<!-- 	<select id="getMenue" resultType="meVO">
+		select * from ajaxmenue where category_num = #{category_num}
+	</select> -->
 </mapper>

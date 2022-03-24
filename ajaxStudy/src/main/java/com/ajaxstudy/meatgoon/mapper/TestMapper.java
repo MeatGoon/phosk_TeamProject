@@ -11,7 +11,7 @@ public interface TestMapper {
 
 	List<MenueVO> meList();
 
-	MenueVO getMenue(String menue_name);
+	MenueVO detailInfo(String menue_name);
 
 	int modify(MenueVO menueVO);
 
@@ -22,4 +22,6 @@ public interface TestMapper {
 	int chkDel(String menueVO);
 
 	int insrtCategory(CategoryVO categoryVO);
+
+	/* int getMenue(String category_num); */
 }

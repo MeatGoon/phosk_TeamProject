@@ -11,7 +11,7 @@ import com.ajaxstudy.meatgoon.model.MenueVO;
 
 @Repository
 public class TestMapperImpl implements TestMapper {
-	
+
 	@Autowired
 	private SqlSession session;
 
@@ -26,8 +26,8 @@ public class TestMapperImpl implements TestMapper {
 	}
 
 	@Override
-	public MenueVO getMenue(String menue_name) {
-		return session.selectOne("getMenue", menue_name);
+	public MenueVO detailInfo(String menue_name) {
+		return session.selectOne("detailInfo", menue_name);
 	}
 
 	@Override
@@ -54,5 +54,10 @@ public class TestMapperImpl implements TestMapper {
 	public int insrtCategory(CategoryVO categoryVO) {
 		return session.insert("insrtCategory", categoryVO);
 	}
+
+	/*
+	 * @Override public int getMenue(String category_num) { return
+	 * session.selectOne("getMenue", category_num); }
+	 */
 
 }

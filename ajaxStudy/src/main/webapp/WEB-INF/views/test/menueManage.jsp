@@ -263,7 +263,6 @@ button {
 												moveForm.attr("action",
 														"/test/detailInfo");
 												moveForm.submit();
-												location.reload();
 												/* $("#modal").fadeIn(); */
 
 												/* 또다시 foreach를 사용하면 데이터 사용낭비가 심함 */
@@ -277,6 +276,10 @@ button {
 		$("#detailMenue_close").click(function() {
 			$("#modal").fadeOut();
 		});
+		$("#list_btn").on('click', function() {
+			window.location.href = "/test/cateList"
+		});
+		
 		$('#add_cate_btn')
 				.on(
 						'click',

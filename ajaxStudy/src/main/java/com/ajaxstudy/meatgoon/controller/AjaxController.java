@@ -47,9 +47,14 @@ public class AjaxController {
 	}
 
 	@GetMapping("/detailInfo")
-	public void detailInfo(int category_num, String menue_name, Model model) {
-		model.addAttribute("meList", testService.getMenue(menue_name));
+	public void detailInfo(String menue_name, Model model) {
+		model.addAttribute("meList", testService.detailInfo(menue_name));
 	}
+
+	/*
+	 * @GetMapping("/getMenue") public void getMenue(int category_num, Model model)
+	 * { model.addAttribute("menues", category_num); }
+	 */
 
 	@PostMapping("/modify")
 	public String menueModify(MenueVO menueVO, RedirectAttributes rttr) {
@@ -57,6 +62,7 @@ public class AjaxController {
 		rttr.addFlashAttribute("result", "modify success");
 		return "redirect:/test/cateList";
 	}
+
 	@PostMapping("/delete")
 	public String menueDelete(MenueVO menueVO, RedirectAttributes rttr) {
 		testService.delete(menueVO);
@@ -86,12 +92,17 @@ public class AjaxController {
 		rttr.addFlashAttribute("result", "insert success");
 		return "redirect:/test/cateList";
 	}
-	
+
 	@PostMapping("/insrtCategory")
 	public String insrtCategory(CategoryVO categoryVO, RedirectAttributes rttr) {
 		testService.insrtCategory(categoryVO);
 		rttr.addFlashAttribute("result", "insert success");
-		return "redirect:/test/menueManage"; 
+		return "redirect:/test/menueManage";
 	}
-	
+
+	/*
+	 * @PostMapping("/getMenue") public String getMenue(HttpServletRequest request)
+	 * { String cateTest = request.getParameter("cateTest");
+	 * testService.getMenue(cateTest); return "redirect:/test/cateList"; }
+	 */
 }

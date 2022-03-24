@@ -5,8 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head></head>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
@@ -51,12 +50,12 @@ button {
 	overflow: auto;
 }
 
-#insert_btn{
+#insert_btn {
 	width: 100%;
 	margin: 0 auto;
 }
 
-#manage_btn{
+#manage_btn {
 	display: block;
 }
 
@@ -201,8 +200,8 @@ button {
 				</c:forEach>
 			</div>
 			<div>
-			<button id="insert_btn">메뉴등록</button>
-			<!-- 메뉴관리 페이지에 옮길 예정 이며 카테고리 값이 없어도.. 게시판처럼 기준 vo객체를 생성후 이용한다면 가능할지도..?-->
+				<button id="insert_btn">메뉴등록</button>
+				<!-- 메뉴관리 페이지에 옮길 예정 이며 카테고리 값이 없어도.. 게시판처럼 기준 vo객체를 생성후 이용한다면 가능할지도..?-->
 			</div>
 		</div>
 	</div>
@@ -215,39 +214,23 @@ button {
 		</div>
 		<div class="modal_layer"></div>
 	</div>
-
-	<form id="moveForm" method="get">
-		<!-- 추후 게시판처럼 기준vo 객체를 생성한다면 사용하게될 form -->
-
-	</form>
+	<form id="moveForm" method="get"></form>
 	<script>
-		$(document)
-				.ready(
-						function() {
-							$(document)
-									.on(
-											'click',
-											'button[id="detailMenue_open"]',
-											function(e) {
-												/* 페이지 이동 테스트중 */
-												e.preventDefault();
-												let moveForm = $("#moveForm");
-												var menueName = $(this).attr(
-														'name');
-												var cateNum = $(this).val();
-												moveForm
-														.append("<input type='hidden' name='category_num' value='"+ cateNum + "'>");
-												moveForm
-														.append("<input type='hidden' name='menue_name' value='"+ menueName + "'>");
-												moveForm.attr("action",
-														"/test/detailInfo");
-												moveForm.submit();
-												location.reload();
-												/* $("#modal").fadeIn(); */
+		$(document).ready(function() {
+			$(document).on('click',	'button[id="detailMenue_open"]',function(e) {
+				/* 페이지 이동 테스트중 */
+				e.preventDefault();
+				let form = $("#moveForm");
+				var menueName = $(this).attr('name');
+				console.log(menueName);
+				form.append("<input type='hidden' name='menue_name' value='"+ menueName +"' />");
+				form.attr("action", "/test/detailInfo");
+				form.submit();
+				/* $("#modal").fadeIn(); */
 
-												/* 또다시 foreach를 사용하면 데이터 사용낭비가 심함 */
-											});
-						});
+				/* 또다시 foreach를 사용하면 데이터 사용낭비가 심함 */
+			});
+		});
 		$('#insert_btn').on('click', function() {
 			window.location.href = "/test/insertMenue"
 		});
@@ -259,6 +242,27 @@ button {
 		$("#detailMenue_close").click(function() {
 			$("#modal").fadeOut();
 		});
+
+		/* 		$(".category_names").on("click", function() {
+		 var caVal = $(this).val();
+		 var form = $("#moveForm");
+		 form.append("<input type='hidden' name='category_num' value='"+ caVal + "'>");
+		 form.attr("action",	"/test/getMenue");
+		 form.submit();
+		 }); */
+		/* 		
+		 function change_menue() {
+		 var cateTest = $(this).val();
+		 $.ajax({
+		 url : "/test/getMenue",
+		 type : "GET",
+		 data : {cateTest : cateTest},
+		 success : function(good){
+		 console.log(good);
+		 alert("전송성공");
+		 }
+		 });
+		 } */
 	</script>
 </body>
 </html>

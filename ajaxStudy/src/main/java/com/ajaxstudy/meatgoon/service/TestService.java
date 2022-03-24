@@ -11,7 +11,7 @@ public interface TestService {
 
 	public List<MenueVO> meList();
 
-	public MenueVO getMenue(String menue_name);
+	public MenueVO detailInfo(String menue_name);
 
 	public int modify(MenueVO menueVO);
 
@@ -22,4 +22,6 @@ public interface TestService {
 	public int chkDel(String menueVO);
 
 	public int insrtCategory(CategoryVO categoryVO);
+
+	/* public int getMenue(String cateTest); */
 }

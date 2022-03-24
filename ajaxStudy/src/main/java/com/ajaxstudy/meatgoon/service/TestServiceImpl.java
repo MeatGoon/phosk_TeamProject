@@ -14,7 +14,7 @@ public class TestServiceImpl implements TestService {
 
 	@Autowired
 	private TestMapper testMapper;
-	
+
 	@Override
 	public List<CategoryVO> cateList() {
 		return testMapper.cateList();
@@ -26,14 +26,14 @@ public class TestServiceImpl implements TestService {
 	}
 
 	@Override
-	public MenueVO getMenue(String menue_name) {
-		return testMapper.getMenue(menue_name);
+	public MenueVO detailInfo(String menue_name) {
+		return testMapper.detailInfo(menue_name);
 	}
 
 	@Override
 	public int modify(MenueVO menueVO) {
 		return testMapper.modify(menueVO);
-		
+
 	}
 
 	@Override
@@ -55,4 +55,12 @@ public class TestServiceImpl implements TestService {
 	public int insrtCategory(CategoryVO categoryVO) {
 		return testMapper.insrtCategory(categoryVO);
 	}
+
+	/*
+	 * @Override public int getMenue(String category_num) { return
+	 * testMapper.getMenue(category_num);
+	 * 
+	 * }
+	 */
+
 }
