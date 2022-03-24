@@ -3,9 +3,6 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ajaxstudy.meatgoon.mapper.TestMapper">
-<!-- 	<select id="boList"  resultType="boVO">
-		select * from testajax
-	</select> -->
 	<select id="cateList"  resultType="cateVO">
 		select * from ajaxcategory
 	</select>
@@ -13,7 +10,6 @@
 		select * from ajaxmenue
 	</select>
 	<select id="getMenue" resultType="meVO">
-		<!-- select * from ajaxmenue WHERE menue_name = #{menue_name} -->
 		select * from ajaxmenue where menue_name = #{menue_name}
 	</select>
 	<update id="menueModify">

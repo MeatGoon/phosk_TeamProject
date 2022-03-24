@@ -15,11 +15,6 @@ public class TestMapperImpl implements TestMapper {
 	@Autowired
 	private SqlSession session;
 
-	/*
-	 * @Override public List<BoardVO> boList() { return
-	 * session.selectList("boList"); }
-	 */
-
 	@Override
 	public List<CategoryVO> cateList() {
 		return session.selectList("cateList");
@@ -27,7 +22,6 @@ public class TestMapperImpl implements TestMapper {
 
 	@Override
 	public List<MenueVO> meList() {
-		// TODO Auto-generated method stub
 		return session.selectList("meList");
 	}
 

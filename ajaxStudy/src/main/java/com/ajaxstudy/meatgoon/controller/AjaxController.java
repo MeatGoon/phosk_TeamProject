@@ -28,11 +28,6 @@ public class AjaxController {
 	@Autowired
 	private TestService testService;
 
-	/*
-	 * @GetMapping(value = "/boList") public void boList(Model model) {
-	 * log.info("bo List ....."); List<BoardVO> list = testService.boList();
-	 * model.addAttribute("boList", list); }
-	 */
 	@GetMapping("/cateList")
 	public void cateList(Model model) {
 		log.info("cate List .....");
@@ -97,7 +92,6 @@ public class AjaxController {
 		testService.insrtCategory(categoryVO);
 		rttr.addFlashAttribute("result", "insert success");
 		return "redirect:/test/menueManage"; 
-		/* ajax로 수정 */
 	}
 	
 }

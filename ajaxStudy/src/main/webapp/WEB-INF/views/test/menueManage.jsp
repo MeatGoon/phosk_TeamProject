@@ -68,6 +68,10 @@ button {
 	float: left;
 }
 
+#delCategory_btn, #list_btn {
+	float: right;
+}
+
 .menue_text {
 	margin: 0 20px 0 10px;
 }
@@ -189,9 +193,11 @@ button {
 		</div>
 		<div class="menueContainer">
 			<div>
-				<input type="text" value="카테고리 이름이 들어갈 자리입니다." />
+				<input type="text" value="카테고리 이름이 들어갈 자리입니다." readonly="readonly" />
 				<button>수정</button>
-				<button value="">삭제</button> <!-- value의 값은 ajax 혹은 moveForm 이용하여 카테고리 불러올 예정 -->
+				<button value="" id="list_btn">목록이동</button>
+				<button value="" id="delCategory_btn">삭제</button>
+				<!-- value의 값은 ajax 혹은 moveForm 이용하여 카테고리 불러올 예정 -->
 				* 현재 기능 미구현
 			</div>
 			<div class="menue_eachform">
@@ -235,7 +241,6 @@ button {
 	<form id="moveForm" method="post">
 		<!-- 추후 게시판처럼 기준vo 객체를 생성한다면 사용하게될 form -->
 	</form>
-	<!-- 모달 jquery -->
 	<script>
 		$(document)
 				.ready(
@@ -248,20 +253,17 @@ button {
 												/* 페이지 이동 테스트중 */
 												e.preventDefault();
 												let moveForm = $("#moveForm");
-												var test22 = $(this).attr(
+												var menueName = $(this).attr(
 														'name');
-												test22 = test22.split("/");
-												$(".menue_info_name").find(
-														"span");
-												console.log(test22[0]);
-												console.log(test22[1]);
+												var cateNum = $(this).val();
 												moveForm
-														.append("<input type='hidden' name='category_num' value='"+ test22[1] + "'>");
+														.append("<input type='hidden' name='category_num' value='"+ cateNum + "'>");
 												moveForm
-														.append("<input type='hidden' name='menue_name' value='"+ test22[0] + "'>");
+														.append("<input type='hidden' name='menue_name' value='"+ menueName + "'>");
 												moveForm.attr("action",
 														"/test/detailInfo");
 												moveForm.submit();
+												location.reload();
 												/* $("#modal").fadeIn(); */
 
 												/* 또다시 foreach를 사용하면 데이터 사용낭비가 심함 */
@@ -287,10 +289,11 @@ button {
 						});
 
 		function deleteChecked() {
-			var checkedbtn = new Array();
+			var checkedbtn = new Array(); /* 체크된 value의 값을 저장할 배열 생성 */
 			$("input:checkbox[name='menue_name']:checked").each(function() {
-				checkedbtn.push($(this).val());
-				console.log(checkedbtn);
+				/* input 태그의 checkbox의 name='menue_name'가 체크 가된 만큼 .each로 반복 하여 이벤트 발생 */
+				checkedbtn.push($(this).val()); /* 배열에 담을 checkbox의 value 값 */
+				console.log(checkedbtn); /* 배열에 담기는지 테스트 */
 			});
 			$.ajax({
 				url : "/test/deleteChk", // controller에서 설정해둔 postmapping의 url
@@ -298,6 +301,7 @@ button {
 				traditional : true, // 전통성 ex) true = checkedbtn='볶음밥', false = checkedbtn[]='볶음밥'
 				data : {
 					checkedbtn : checkedbtn
+				/* 담아둔 배열을 controller로 보낸다 */
 				},
 				success : function(testdata) {
 					if (testdata = 1) {

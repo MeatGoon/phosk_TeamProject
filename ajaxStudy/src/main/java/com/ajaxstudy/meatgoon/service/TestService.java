@@ -6,7 +6,6 @@ import com.ajaxstudy.meatgoon.model.CategoryVO;
 import com.ajaxstudy.meatgoon.model.MenueVO;
 
 public interface TestService {
-	/* public List<BoardVO> boList(); */
 
 	public List<CategoryVO> cateList();
 

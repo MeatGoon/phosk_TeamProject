@@ -220,7 +220,6 @@ button {
 		<!-- 추후 게시판처럼 기준vo 객체를 생성한다면 사용하게될 form -->
 
 	</form>
-	<!-- 모달 jquery -->
 	<script>
 		$(document)
 				.ready(

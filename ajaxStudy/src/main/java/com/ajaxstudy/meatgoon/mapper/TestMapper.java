@@ -6,8 +6,7 @@ import com.ajaxstudy.meatgoon.model.CategoryVO;
 import com.ajaxstudy.meatgoon.model.MenueVO;
 
 public interface TestMapper {
-	/* List<BoardVO> boList(); */
-
+	
 	List<CategoryVO> cateList();
 
 	List<MenueVO> meList();

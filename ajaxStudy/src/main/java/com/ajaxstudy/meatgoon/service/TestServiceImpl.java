@@ -15,10 +15,6 @@ public class TestServiceImpl implements TestService {
 	@Autowired
 	private TestMapper testMapper;
 	
-	/*
-	 * @Override public List<BoardVO> boList() { return testMapper.boList(); }
-	 */
-
 	@Override
 	public List<CategoryVO> cateList() {
 		return testMapper.cateList();
