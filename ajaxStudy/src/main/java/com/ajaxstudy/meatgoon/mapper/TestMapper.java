@@ -23,5 +23,5 @@ public interface TestMapper {
 
 	int insrtCategory(CategoryVO categoryVO);
 
-	/* int getMenue(String category_num); */
+	List<MenueVO> getMenue(String cateTest); 
 }

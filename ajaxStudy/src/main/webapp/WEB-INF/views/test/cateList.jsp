@@ -5,7 +5,8 @@
 <!DOCTYPE html>
 <html>
 <head></head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
@@ -125,47 +126,46 @@ button {
 </style>
 <body>
 	<script>
-		$(document)
-				.ready(
-						function() {
-							console.log('레디까지 완료');
-							$(document)
-									.on(
-											"click",
-											"button[class='category_names']",
-											function() {
-												var carNum = $(this).val();
-												console.log(carNum);
-												$(".menueInfo_container")
-														.remove();
+		/* 		$(document)
+					.ready(
+							function() {
+								 console.log('레디까지 완료');
+								$(document)
+										.on(
+												"click",
+												"button[class='category_names']",
+												function() {
+													var carNum = $(this).val();
+													console.log(carNum);
+													$(".menueInfo_container")
+															.remove();
 
-												<c:forEach items='${meList}' var='meList'>
+													<c:forEach items='${meList}' var='meList'>
 
-												var test123 = <c:out value="${meList.category_num}"/>;
+													var test123 = <c:out value="${meList.category_num}"/>;
 
-												if (test123 == carNum) {
-													console.log("아니 여기옴?");
-													$(".menue_eachform")
-															.prepend(
-																	"<div class='menueInfo_container'>"
-																			+ "<button name='${meList.menue_name}' value='${meList.category_num}' id='detailMenue_open'>상세보기</button>"
-																			+ "<div class='menueInfo menueInfo_top'>"
-																			+ "<span class='menue_text menue_text_top menue_info_name'>음식명 : ${meList.menue_name}</span>"
-																			+ "<span class='menue_text menue_text_top menue_info_price'>가격 : <fmt:formatNumber value='${meList.menue_price}'></fmt:formatNumber>&nbsp;원</span>"
-																			+ "</div>"
-																			+ "<div class='menueInfo menueInfo_bottom'>"
-																			+ "<span class='menue_text menue_info_detail'>${meList.etc}</span>"
-																			+ "</div>"
-																			+ "</div>");
-													console.log("분리후실행중");
-													/* 추후 클릭시 버튼 수정이 아닌 카테고리 번호를 저장하여 상세목록 이동시 같이 값을 보낸후
-													다시 메뉴 목록으로 돌아올떄 기존 값을 유지할수 있게 해야함. */
-												}
-												console.log("실행중");
-												</c:forEach>
+													if (test123 == carNum) {
+														 console.log("아니 여기옴?");
+														$(".menue_eachform")
+																.prepend(
+																		"<div class='menueInfo_container'>"
+																				+ "<button name='${meList.menue_name}' value='${meList.category_num}' id='detailMenue_open'>상세보기</button>"
+																				+ "<div class='menueInfo menueInfo_top'>"
+																				+ "<span class='menue_text menue_text_top menue_info_name'>음식명 : ${meList.menue_name}</span>"
+																				+ "<span class='menue_text menue_text_top menue_info_price'>가격 : <fmt:formatNumber value='${meList.menue_price}'></fmt:formatNumber>&nbsp;원</span>"
+																				+ "</div>"
+																				+ "<div class='menueInfo menueInfo_bottom'>"
+																				+ "<span class='menue_text menue_info_detail'>${meList.etc}</span>"
+																				+ "</div>"
+																				+ "</div>"); 
+														 console.log("분리후실행중"); 
 
-											});
-						});
+													}*/
+		/* console.log("실행중"); */
+		/* 	</c:forEach>
+
+		});
+		}); */
 	</script>
 	<h1>카테고리페이지입니다</h1>
 	<div class="mainContainer">
@@ -198,6 +198,7 @@ button {
 						</div>
 					</c:if>
 				</c:forEach>
+
 			</div>
 			<div>
 				<button id="insert_btn">메뉴등록</button>
@@ -214,23 +215,33 @@ button {
 		</div>
 		<div class="modal_layer"></div>
 	</div>
-	<form id="moveForm" method="get"></form>
-	<script>
-		$(document).ready(function() {
-			$(document).on('click',	'button[id="detailMenue_open"]',function(e) {
-				/* 페이지 이동 테스트중 */
-				e.preventDefault();
-				let form = $("#moveForm");
-				var menueName = $(this).attr('name');
-				console.log(menueName);
-				form.append("<input type='hidden' name='menue_name' value='"+ menueName +"' />");
-				form.attr("action", "/test/detailInfo");
-				form.submit();
-				/* $("#modal").fadeIn(); */
 
-				/* 또다시 foreach를 사용하면 데이터 사용낭비가 심함 */
-			});
-		});
+	<form id="moveForm" method="get"></form>
+
+	<script>
+		$(document)
+				.ready(
+						function() {
+							$(document)
+									.on(
+											'click',
+											'button[id="detailMenue_open"]',
+											function(e) {
+												/* 페이지 이동 테스트중 */
+												e.preventDefault();
+												let form = $("#moveForm");
+												var menueName = $(this).attr(
+														'name');
+												console.log(menueName);
+												form
+														.append("<input type='hidden' name='menue_name' value='"+ menueName +"' />");
+												form.attr("action",
+														"/test/detailInfo");
+												form.submit();
+												/* $("#modal").fadeIn(); */
+
+											});
+						});
 		$('#insert_btn').on('click', function() {
 			window.location.href = "/test/insertMenue"
 		});
@@ -250,19 +261,22 @@ button {
 		 form.attr("action",	"/test/getMenue");
 		 form.submit();
 		 }); */
-		/* 		
-		 function change_menue() {
-		 var cateTest = $(this).val();
-		 $.ajax({
-		 url : "/test/getMenue",
-		 type : "GET",
-		 data : {cateTest : cateTest},
-		 success : function(good){
-		 console.log(good);
-		 alert("전송성공");
-		 }
-		 });
-		 } */
+
+		$(document).on("click", "button[class='category_names']", function() {
+			var cateTest = $(this).val();
+			console.log(cateTest + " ajax 부분");
+			$.ajax({
+				url : "/test/getMenue",
+				type : "GET",
+				data : {
+					cateTest : cateTest
+				},
+				success : function(good) {
+					console.log(good + 'test');
+					alert("전송성공");
+				}
+			});
+		});
 	</script>
 </body>
 </html>

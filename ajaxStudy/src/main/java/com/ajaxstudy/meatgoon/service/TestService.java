@@ -23,5 +23,5 @@ public interface TestService {
 
 	public int insrtCategory(CategoryVO categoryVO);
 
-	/* public int getMenue(String cateTest); */
+	public List<MenueVO> getMenue(String cateTest);
 }

@@ -1,6 +1,7 @@
 package com.ajaxstudy.meatgoon.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -54,6 +55,7 @@ public class AjaxController {
 	/*
 	 * @GetMapping("/getMenue") public void getMenue(int category_num, Model model)
 	 * { model.addAttribute("menues", category_num); }
+	 *  이부분은 form으로 이동할때 사용할 메서드였음
 	 */
 
 	@PostMapping("/modify")
@@ -100,9 +102,11 @@ public class AjaxController {
 		return "redirect:/test/menueManage";
 	}
 
-	/*
-	 * @PostMapping("/getMenue") public String getMenue(HttpServletRequest request)
-	 * { String cateTest = request.getParameter("cateTest");
-	 * testService.getMenue(cateTest); return "redirect:/test/cateList"; }
-	 */
+	@GetMapping("/getMenue")
+	public void getMenue(Model model, HttpServletRequest request) {
+		String cateTest = request.getParameter("cateTest");
+		model.addAttribute("cateTest", testService.getMenue(cateTest));
+		System.out.println(cateTest + " 컨트롤러의 값");
+	}
+
 }

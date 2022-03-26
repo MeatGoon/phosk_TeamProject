@@ -56,11 +56,11 @@ public class TestServiceImpl implements TestService {
 		return testMapper.insrtCategory(categoryVO);
 	}
 
-	/*
-	 * @Override public int getMenue(String category_num) { return
-	 * testMapper.getMenue(category_num);
-	 * 
-	 * }
-	 */
+	@Override
+	public List<MenueVO> getMenue(String cateTest) {
+		System.out.println(cateTest + " 서비스의 값");
+		return testMapper.getMenue(cateTest);
+
+	}
 
 }

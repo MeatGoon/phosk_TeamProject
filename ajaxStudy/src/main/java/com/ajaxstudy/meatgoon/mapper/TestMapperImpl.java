@@ -55,9 +55,10 @@ public class TestMapperImpl implements TestMapper {
 		return session.insert("insrtCategory", categoryVO);
 	}
 
-	/*
-	 * @Override public int getMenue(String category_num) { return
-	 * session.selectOne("getMenue", category_num); }
-	 */
+	@Override
+	public List<MenueVO> getMenue(String cateTest) {
+		System.out.println(cateTest + " 맵퍼의 값");
+		return session.selectList("getMenue", cateTest);
+	}
 
 }

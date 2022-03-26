@@ -265,7 +265,7 @@ button {
 												moveForm.submit();
 												/* $("#modal").fadeIn(); */
 
-												/* 또다시 foreach를 사용하면 데이터 사용낭비가 심함 */
+												
 											});
 						});
 
@@ -314,6 +314,7 @@ button {
 				}
 			});
 		}
+		
 	</script>
 </body>
 </html>
