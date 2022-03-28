@@ -125,48 +125,6 @@ button {
 }
 </style>
 <body>
-	<script>
-		/* 		$(document)
-					.ready(
-							function() {
-								 console.log('레디까지 완료');
-								$(document)
-										.on(
-												"click",
-												"button[class='category_names']",
-												function() {
-													var carNum = $(this).val();
-													console.log(carNum);
-													$(".menueInfo_container")
-															.remove();
-
-													<c:forEach items='${meList}' var='meList'>
-
-													var test123 = <c:out value="${meList.category_num}"/>;
-
-													if (test123 == carNum) {
-														 console.log("아니 여기옴?");
-														$(".menue_eachform")
-																.prepend(
-																		"<div class='menueInfo_container'>"
-																				+ "<button name='${meList.menue_name}' value='${meList.category_num}' id='detailMenue_open'>상세보기</button>"
-																				+ "<div class='menueInfo menueInfo_top'>"
-																				+ "<span class='menue_text menue_text_top menue_info_name'>음식명 : ${meList.menue_name}</span>"
-																				+ "<span class='menue_text menue_text_top menue_info_price'>가격 : <fmt:formatNumber value='${meList.menue_price}'></fmt:formatNumber>&nbsp;원</span>"
-																				+ "</div>"
-																				+ "<div class='menueInfo menueInfo_bottom'>"
-																				+ "<span class='menue_text menue_info_detail'>${meList.etc}</span>"
-																				+ "</div>"
-																				+ "</div>"); 
-														 console.log("분리후실행중"); 
-
-													}*/
-		/* console.log("실행중"); */
-		/* 	</c:forEach>
-
-		});
-		}); */
-	</script>
 	<h1>카테고리페이지입니다</h1>
 	<div class="mainContainer">
 		<div class="categoryCon">
@@ -180,23 +138,21 @@ button {
 				<button id="manage_btn">메뉴관리</button>
 			</div>
 			<div class="menue_eachform">
-				<c:forEach items='${meList}' var='meList'>
-					<c:if test='${meList.category_num eq 2}'>
-						<div class='menueInfo_container'>
-							<button name="${meList.menue_name}"
-								value="${meList.category_num}" id="detailMenue_open">상세보기</button>
-							<div class="menueInfo menueInfo_top">
-								<span class="menue_text menue_text_top menue_info_name">음식명
-									: ${meList.menue_name}</span> <span
-									class="menue_text menue_text_top menue_info_price">가격 :
-									<fmt:formatNumber value="${meList.menue_price}"></fmt:formatNumber>&nbsp;원
-								</span>
-							</div>
-							<div class="menueInfo menueInfo_bottom">
-								<span class="menue_text menue_info_detail">${meList.etc}</span>
-							</div>
+				<c:forEach items='${cateTest}' var='cateTest'>
+					<div class='menueInfo_container'>
+						<button name="${cateTest.menue_name}"
+							value="${cateTest.category_num}" id="detailMenue_open">상세보기</button>
+						<div class="menueInfo menueInfo_top">
+							<span class="menue_text menue_text_top menue_info_name">음식명
+								: ${cateTest.menue_name}</span> <span
+								class="menue_text menue_text_top menue_info_price">가격 : <fmt:formatNumber
+									value="${cateTest.menue_price}"></fmt:formatNumber>&nbsp;원
+							</span>
 						</div>
-					</c:if>
+						<div class="menueInfo menueInfo_bottom">
+							<span class="menue_text menue_info_detail">${meList.etc}</span>
+						</div>
+					</div>
 				</c:forEach>
 
 			</div>
@@ -253,27 +209,25 @@ button {
 		$("#detailMenue_close").click(function() {
 			$("#modal").fadeOut();
 		});
-
-		/* 		$(".category_names").on("click", function() {
-		 var caVal = $(this).val();
-		 var form = $("#moveForm");
-		 form.append("<input type='hidden' name='category_num' value='"+ caVal + "'>");
-		 form.attr("action",	"/test/getMenue");
-		 form.submit();
-		 }); */
-
 		$(document).on("click", "button[class='category_names']", function() {
 			var cateTest = $(this).val();
-			console.log(cateTest + " ajax 부분");
+			/* console.log(cateTest + " ajax 부분"); */
 			$.ajax({
-				url : "/test/getMenue",
+				url : "/test/cateList",
 				type : "GET",
 				data : {
-					cateTest : cateTest
+					category_num : cateTest
 				},
-				success : function(good) {
-					console.log(good + 'test');
-					alert("전송성공");
+				success : function(testData) {
+					/* console.log(testData); */
+					$('body').html(testData);
+					/* console.log("전송성공"); */
+					/*
+					현재 수정 부분 pom.xml 의 mybatis 업데이트
+					
+					현재 발생한 문재점 기존 데이터가 않보이는 곳에 쌓이는거 같다
+					페이지 F12 를 눌렀을때 network 부분에서 느려지는것을 확인
+					 */
 				}
 			});
 		});

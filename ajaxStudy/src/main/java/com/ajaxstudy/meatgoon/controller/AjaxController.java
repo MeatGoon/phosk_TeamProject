@@ -30,12 +30,12 @@ public class AjaxController {
 	private TestService testService;
 
 	@GetMapping("/cateList")
-	public void cateList(Model model) {
+	public void cateList(Model model, HttpServletRequest request) {
 		log.info("cate List .....");
+		String cateTest = request.getParameter("category_num");
 		List<CategoryVO> cateList = testService.cateList();
-		List<MenueVO> meList = testService.meList();
+		model.addAttribute("cateTest", testService.getMenue(cateTest));
 		model.addAttribute("cateList", cateList);
-		model.addAttribute("meList", meList);
 	}
 
 	@GetMapping("/menueManage") /* 카테고리 숫자 받아서 반환할거 필요할거같음 */
@@ -54,8 +54,7 @@ public class AjaxController {
 
 	/*
 	 * @GetMapping("/getMenue") public void getMenue(int category_num, Model model)
-	 * { model.addAttribute("menues", category_num); }
-	 *  이부분은 form으로 이동할때 사용할 메서드였음
+	 * { model.addAttribute("menues", category_num); } 이부분은 form으로 이동할때 사용할 메서드였음
 	 */
 
 	@PostMapping("/modify")
@@ -102,11 +101,11 @@ public class AjaxController {
 		return "redirect:/test/menueManage";
 	}
 
-	@GetMapping("/getMenue")
-	public void getMenue(Model model, HttpServletRequest request) {
-		String cateTest = request.getParameter("cateTest");
-		model.addAttribute("cateTest", testService.getMenue(cateTest));
-		System.out.println(cateTest + " 컨트롤러의 값");
-	}
+	/*
+	 * @GetMapping("/getMenue") public void getMenue(Model model, HttpServletRequest
+	 * request) { String cateTest = request.getParameter("cateTest");
+	 * model.addAttribute("cateTest", testService.getMenue(cateTest));
+	 * System.out.println(cateTest + " 컨트롤러의 값"); }
+	 */
 
 }
