@@ -31,8 +31,17 @@
 	</insert>
 	<select id="getMenue" resultType="meVO" parameterType="String">
 		select * from ajaxmenue
-		<if test="category_num != null">
-			where category_num = #{category_num}
-		</if>
+		<choose>
+			<when test="category_num != null">
+				where category_num = #{cateTest}
+			</when>
+			<!-- 미선택시 인기메뉴 자동선택 -->
+			<otherwise>
+				where category_num = 0
+			</otherwise>
+		</choose>
+	</select>
+	<select id="menuGetAll">
+		select a.category_num, a.category_name, b.menue_price, b.etc from ajaxcategory a, ajaxmenue b where a.category_num = b.category_num AND a.category_num = #{cateTest}
 	</select>
 </mapper>

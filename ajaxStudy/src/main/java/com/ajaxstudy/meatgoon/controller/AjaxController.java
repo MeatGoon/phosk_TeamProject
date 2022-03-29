@@ -32,7 +32,7 @@ public class AjaxController {
 	@GetMapping("/cateList")
 	public void cateList(Model model, HttpServletRequest request) {
 		log.info("cate List .....");
-		String cateTest = request.getParameter("category_num");
+		String cateTest = request.getParameter("cateTest");
 		List<CategoryVO> cateList = testService.cateList();
 		model.addAttribute("cateTest", testService.getMenue(cateTest));
 		model.addAttribute("cateList", cateList);

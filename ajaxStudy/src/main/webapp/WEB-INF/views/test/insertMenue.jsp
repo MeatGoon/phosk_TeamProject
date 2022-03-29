@@ -12,7 +12,7 @@
 <body>
 	<h1>등록페이지</h1>
 	<div>
-		<form id="insertForm" method="post">
+		<form id="/test/insertForm" method="post">
 			<div>
 				<select name="category_num">
 					<option selected="selected" value="">카테고리 선택</option>
