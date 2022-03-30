@@ -131,52 +131,52 @@ button {
 </style>
 <body>
 	<script>
-/* 		$(document)
-				.ready(
-						function() {
-							console.log('레디까지 완료');
-							$(document)
-									.on(
-											"click",
-											"button[class='category_names']",
-											function() {
-												var carNum = $(this).val();
-												console.log(carNum);
-												$(".menueInfo_container")
-														.remove();
+		/* 		$(document)
+		 .ready(
+		 function() {
+		 console.log('레디까지 완료');
+		 $(document)
+		 .on(
+		 "click",
+		 "button[class='category_names']",
+		 function() {
+		 var carNum = $(this).val();
+		 console.log(carNum);
+		 $(".menueInfo_container")
+		 .remove();
 
-												<c:forEach items='${meList}' var='meList'>
+		 <c:forEach items='${meList}' var='meList'>
 
-												var test123 = <c:out value="${meList.category_num}"/>;
+		 var test123 = <c:out value="${meList.category_num}"/>;
 
-												if (test123 == carNum) {
-													console.log("아니 여기옴?");
-													$(".menue_eachform")
-															.prepend(
-																	"<div class='menueInfo_container'>"
-																			+ "<div>"
-																			+ "<button name='${meList.menue_name}' value='${meList.category_num}' id='detailMenue_open'>상세보기</button>"
-																			+ "</div>"
-																			+ "<div>"
-																			+ "<input type='checkbox' name='menue_name' id='checked_menue' value='${meList.menue_name}' />"
-																			+ "</div>"
-																			+ "<div class='menueInfo menueInfo_top'>"
-																			+ "<span class='menue_text menue_text_top menue_info_name'>음식명 : ${meList.menue_name}</span> "
-																			+ "<span class='menue_text menue_text_top menue_info_price'>가격 : <fmt:formatNumber value='${meList.menue_price}'></fmt:formatNumber>&nbsp;원</span>"
-																			+ "</div>"
-																			+ "<div class='menueInfo menueInfo_bottom'>"
-																			+ "<span class='menue_text menue_info_detail'>${meList.etc}</span>"
-																			+ "</div>"
-																			+ "</div>");
-													console.log("분리후실행중");
-													추후 클릭시 버튼 수정이 아닌 카테고리 번호를 저장하여 상세목록 이동시 같이 값을 보낸후
-													다시 메뉴 목록으로 돌아올떄 기존 값을 유지할수 있게 해야함.
-												}
-												console.log("실행중");
-												</c:forEach>
+		 if (test123 == carNum) {
+		 console.log("아니 여기옴?");
+		 $(".menue_eachform")
+		 .prepend(
+		 "<div class='menueInfo_container'>"
+		 + "<div>"
+		 + "<button name='${meList.menue_name}' value='${meList.category_num}' id='detailMenue_open'>상세보기</button>"
+		 + "</div>"
+		 + "<div>"
+		 + "<input type='checkbox' name='menue_name' id='checked_menue' value='${meList.menue_name}' />"
+		 + "</div>"
+		 + "<div class='menueInfo menueInfo_top'>"
+		 + "<span class='menue_text menue_text_top menue_info_name'>음식명 : ${meList.menue_name}</span> "
+		 + "<span class='menue_text menue_text_top menue_info_price'>가격 : <fmt:formatNumber value='${meList.menue_price}'></fmt:formatNumber>&nbsp;원</span>"
+		 + "</div>"
+		 + "<div class='menueInfo menueInfo_bottom'>"
+		 + "<span class='menue_text menue_info_detail'>${meList.etc}</span>"
+		 + "</div>"
+		 + "</div>");
+		 console.log("분리후실행중");
+		 추후 클릭시 버튼 수정이 아닌 카테고리 번호를 저장하여 상세목록 이동시 같이 값을 보낸후
+		 다시 메뉴 목록으로 돌아올떄 기존 값을 유지할수 있게 해야함.
+		 }
+		 console.log("실행중");
+		 </c:forEach>
 
-											});
-						}); */
+		 });
+		 }); */
 	</script>
 	<h1>메뉴관리페이지입니다</h1>
 	<div class="mainContainer">
@@ -192,36 +192,41 @@ button {
 			</div>
 		</div>
 		<div class="menueContainer">
-			<div>
+			<div class="btnTest">
 				<input type="text" value="카테고리 이름이 들어갈 자리입니다." readonly="readonly" />
-				<button>수정</button>
-				<button id="list_btn" onclick="moveList()">목록이동</button>
-				<button value="" id="delCategory_btn">삭제</button>
+				<button type="button" value="${nowPage.nowCate}"
+					id="modify_cateName">수정</button>
+				<button type="button" value="${nowPage.nowCate}"
+					id="list_btn">목록이동</button>
+				<button type="button" value="${nowPage.nowCate}"
+					id="delCategory_btn">삭제</button>
 				<!-- value의 값은 ajax 혹은 moveForm 이용하여 카테고리 불러올 예정 -->
+				<!-- 페이징의 값을 아이디 하나로 일괄로 지정 가능한가? -->
+
 				* 현재 기능 미구현
 			</div>
 			<div class="menue_eachform">
 				<c:forEach items='${cateTest}' var='cateTest'>
-						<div class='menueInfo_container'>
-							<div>
-								<button name="${cateTest.menue_name}/${cateTest.category_num}"
-									id="detailMenue_open">상세보기</button>
-							</div>
-							<div>
-								<input type="checkbox" name="menue_name" id="checked_menue"
-									value="${cateTest.menue_name}" />
-							</div>
-							<div class="menueInfo menueInfo_top">
-								<span class="menue_text menue_text_top menue_info_name">음식명
-									: ${cateTest.menue_name}</span> <span
-									class="menue_text menue_text_top menue_info_price">가격 :
-									<fmt:formatNumber value="${cateTest.menue_price}"></fmt:formatNumber>&nbsp;원
-								</span>
-							</div>
-							<div class="menueInfo menueInfo_bottom">
-								<span class="menue_text menue_info_detail">${cateTest.etc}</span>
-							</div>
+					<div class='menueInfo_container'>
+						<div>
+							<button name="${cateTest.menue_name}/${cateTest.category_num}"
+								id="detailMenue_open">상세보기</button>
 						</div>
+						<div>
+							<input type="checkbox" name="menue_name" id="checked_menue"
+								value="${cateTest.menue_name}" />
+						</div>
+						<div class="menueInfo menueInfo_top">
+							<span class="menue_text menue_text_top menue_info_name">음식명
+								: ${cateTest.menue_name}</span> <span
+								class="menue_text menue_text_top menue_info_price">가격 : <fmt:formatNumber
+									value="${cateTest.menue_price}"></fmt:formatNumber>&nbsp;원
+							</span>
+						</div>
+						<div class="menueInfo menueInfo_bottom">
+							<span class="menue_text menue_info_detail">${cateTest.etc}</span>
+						</div>
+					</div>
 				</c:forEach>
 			</div>
 			<button id="checked_btn" onclick="deleteChecked();">선택 삭제</button>
@@ -238,6 +243,7 @@ button {
 	</div>
 	<form id="moveForm" method="post">
 		<!-- 추후 게시판처럼 기준vo 객체를 생성한다면 사용하게될 form -->
+		<input type="text" name="nowCate" value="${nowPage.nowCate}" />
 	</form>
 	<script>
 		$(document)
@@ -263,7 +269,6 @@ button {
 												moveForm.submit();
 												/* $("#modal").fadeIn(); */
 
-												
 											});
 						});
 
@@ -274,12 +279,13 @@ button {
 		$("#detailMenue_close").click(function() {
 			$("#modal").fadeOut();
 		});
-		function moveList() {
-			$('#moveForm').attr()
+		$(document).on("click", "#list_btn", function() {
+			$('#moveForm').attr('method', 'get');
+			$('#moveForm').append('<input type="text" name="cateTest" value="' + $(this).val() + '"/>');
 			$('#moveForm').attr('action', '/test/cateList');
 			$('#moveForm').submit();
-		};
-		
+		});
+
 		$('#add_cate_btn')
 				.on(
 						'click',
@@ -314,36 +320,40 @@ button {
 				}
 			});
 		}
-		$(document).on("click", "button[class='category_names']", function() {
-			var cateTest = $(this).val();
-			/* console.log(cateTest + " ajax 부분"); */
-			$.ajax({
-				url : "/test/menueManage",
-				type : "GET",
-				data : {
-					cateTest : cateTest
-				},
-				success : function(testData) {
-					document.body.innerHTML = testData;
-					console.log(cateTest);
-					$('#moveForm').append('<input type="text" name="cateTest" value="' + cateTest + '"/>')
-					/*$('body').html(testData);*/
+		$(document).on(
+				"click",
+				"button[class='category_names']",
+				function() {
+					var cateTest = $(this).val();
+					/* console.log(cateTest + " ajax 부분"); */
+					$.ajax({
+						url : "/test/menueManage",
+						type : "GET",
+						data : {
+							cateTest : cateTest
+						},
+						success : function(testData) {
+							document.body.innerHTML = testData;
+							console.log(cateTest);
+							$('#moveForm').find($('input[name="cateTest"]').val(cateTest));
+							$('button[id="moveForm"]').val(cateTest);
+							/*$('body').html(testData);*/
 
-					/*
-					 * body 부분 내용을 testData로 수정
-					 */
+							/*
+							 * body 부분 내용을 testData로 수정
+							 */
 
-					/*
-					 * 현재 수정 부분 pom.xml 의 mybatis 업데이트 mybatis 3.4.6 -> 3.5.3 mybatis
-					 * spring 1.3.2 -> 2.0.5 으로 변경후 $('body').html(testData); 추가 하니 됬음
-					 * 변경전 테스트 안해봄 현재 발생한 문재점 기존 데이터가 않보이는 곳에 쌓이는거 같다 페이지 F12 를 눌렀을때
-					 * network 부분에서 느려지는것을 확인
-					 */
+							/*
+							 * 현재 수정 부분 pom.xml 의 mybatis 업데이트 mybatis 3.4.6 -> 3.5.3 mybatis
+							 * spring 1.3.2 -> 2.0.5 으로 변경후 $('body').html(testData); 추가 하니 됬음
+							 * 변경전 테스트 안해봄 현재 발생한 문재점 기존 데이터가 않보이는 곳에 쌓이는거 같다 페이지 F12 를 눌렀을때
+							 * network 부분에서 느려지는것을 확인
+							 */
 
-				}
-			});
+						}
+					});
 
-		});
+				});
 	</script>
 </body>
 </html>

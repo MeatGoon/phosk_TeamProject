@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.teamproject.phosk.branch.menu.service.TestService;
 import com.teamproject.phosk.branch.menu.vo.CategoryVO;
 import com.teamproject.phosk.branch.menu.vo.MenueVO;
+import com.teamproject.phosk.branch.menu.vo.NowPage;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -30,21 +31,23 @@ public class AjaxController {
 	private TestService testService;
 
 	@GetMapping("/cateList")
-	public void cateList(Model model, HttpServletRequest request) {
+	public void cateList(Model model, HttpServletRequest request, NowPage nowCate) {
 		log.info("cate List .....");
 		String cateTest = request.getParameter("cateTest");
 		List<CategoryVO> cateList = testService.cateList();
 		model.addAttribute("cateTest", testService.getMenue(cateTest));
 		model.addAttribute("cateList", cateList);
+		model.addAttribute("nowCate", nowCate);
 	}
 
 	@GetMapping("/menueManage") /* 카테고리 숫자 받아서 반환할거 필요할거같음 */
-	public void menueManage(Model model, HttpServletRequest request) {
+	public void menueManage(Model model, HttpServletRequest request, NowPage nowPage) {
 		log.info("menuManage List .....");
 		String cateTest = request.getParameter("cateTest");
 		List<CategoryVO> cateList = testService.cateList();
 		model.addAttribute("cateList", cateList);
 		model.addAttribute("cateTest", testService.menuGetAll(cateTest));
+		model.addAttribute("nowPage", nowPage);
 	}
 
 	@GetMapping("/detailInfo")

@@ -99,7 +99,7 @@ button {
 		</div>
 		<div class="menueContainer">
 			<div class="manage_con">
-				<button id="manage_btn" onclick="manage_btn()">메뉴관리</button>
+				<button value="${nowPage.nowCate}" id="manage_btn">메뉴관리</button>
 			</div>
 			<div id="menue_eachform">
 				<c:forEach items='${cateTest}' var='cateTest'>
@@ -129,6 +129,8 @@ button {
 
 	<form id="moveForm" method="get">
 		<!-- cateTest 라는 name으로 menueManage 페이지 이동시키면 현재 보고있던 카테고리 바로뜰수 있을거 같음 -->
+		
+		<input type="text" name="nowCate" value="${nowPage.nowCate}"/>
 	</form>
 
 	<script>
@@ -160,11 +162,11 @@ button {
 			window.location.href = "/test/insertMenue";
 		});
 
-		function manage_btn() {
-			alert('실행중');
+		$(document).on("click", "#manage_btn", function() {
+			$('#moveForm').append('<input type="text" name="cateTest" value="' + $(this).val() + '"/>');
 			$('#moveForm').attr('action', '/test/menueManage');
 			$('#moveForm').submit();
-		};
+		});
 		$(document).on("click", "button[class='category_names']", function() {
 			var cateTest = $(this).val();
 			/* console.log(cateTest + " ajax 부분"); */
@@ -177,7 +179,8 @@ button {
 				success : function(testData) {
 					document.body.innerHTML = testData;
 					console.log(cateTest);
-					$('#moveForm').append('<input type="text" name="cateTest" value="' + cateTest + '"/>')
+					$('#moveForm').find('input[name="nowCate"]').val(cateTest);
+					$('#manage_btn').val(cateTest);
 					/* 위에 moveForm 의 단점 카테고리를 변경하지 않을경우 오류가 발생함 */
 					/*$('body').html(testData);*/
 
