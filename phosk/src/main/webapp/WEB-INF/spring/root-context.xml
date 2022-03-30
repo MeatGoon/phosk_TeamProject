@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+			
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- 해당 db정보 따로 파일로 뺄 예정  -->
+	<context:property-placeholder location="classpath:dbconfig/dbinfo.properties" />
+
+	<bean class="com.zaxxer.hikari.HikariConfig" id="hikariConfig">
+		<property name="driverClassName" value="${oracle.driverClass}"></property>
+		<property name="jdbcUrl" value="${oracle.url}"></property>
+		<property name="username" value="${oracle.username}"></property>
+		<property name="password" value="${oracle.password}"></property>
+	</bean>
+	
+	<!-- HikrriCP configuration -->
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<constructor-arg ref="hikariConfig"></constructor-arg>
+	</bean>
+	
+	<!-- Mybatis configuration -->
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="mapperLocations" value="classpath:com/teamproject/phosk/branch/menu/mapper/query/*.xml"></property> 
+		<property name="configLocation" value="classpath:com/teamproject/phosk/branch/menu/mapper/config/mybatis-config.xml"></property>
+	</bean>
+	
+	<bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSession" destroy-method="clearCache">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
+	</bean>
+
+	<context:component-scan base-package="com.teamproject.phosk"></context:component-scan>
+</beans>
