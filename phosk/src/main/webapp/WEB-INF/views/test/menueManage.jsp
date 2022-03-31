@@ -195,11 +195,11 @@ button {
 			<div class="btnTest">
 				<input type="text" value="카테고리 이름이 들어갈 자리입니다." readonly="readonly" />
 				<button type="button" value="${nowPage.nowCate}"
-					id="modify_cateName">수정</button>
+					id="modify_cateName" class="cri_btn">수정</button>
 				<button type="button" value="${nowPage.nowCate}"
-					id="list_btn">목록이동</button>
+					id="list_btn" class="cri_btn">목록이동</button>
 				<button type="button" value="${nowPage.nowCate}"
-					id="delCategory_btn">삭제</button>
+					id="delCategory_btn" class="cri_btn">삭제</button>
 				<!-- value의 값은 ajax 혹은 moveForm 이용하여 카테고리 불러올 예정 -->
 				<!-- 페이징의 값을 아이디 하나로 일괄로 지정 가능한가? -->
 
@@ -254,7 +254,6 @@ button {
 											'click',
 											'button[id="detailMenue_open"]',
 											function(e) {
-												/* 페이지 이동 테스트중 */
 												e.preventDefault();
 												let moveForm = $("#moveForm");
 												var menueName = $(this).attr(
@@ -267,7 +266,6 @@ button {
 												moveForm.attr("action",
 														"/test/detailInfo");
 												moveForm.submit();
-												/* $("#modal").fadeIn(); */
 
 											});
 						});
@@ -280,6 +278,7 @@ button {
 			$("#modal").fadeOut();
 		});
 		$(document).on("click", "#list_btn", function() {
+			console.log('test');
 			$('#moveForm').attr('method', 'get');
 			$('#moveForm').append('<input type="text" name="cateTest" value="' + $(this).val() + '"/>');
 			$('#moveForm').attr('action', '/test/cateList');
@@ -335,21 +334,12 @@ button {
 						success : function(testData) {
 							document.body.innerHTML = testData;
 							console.log(cateTest);
-							$('#moveForm').find($('input[name="cateTest"]').val(cateTest));
-							$('button[id="moveForm"]').val(cateTest);
-							/*$('body').html(testData);*/
+							$('#moveForm').find('input[name="nowCate"]').val(cateTest);
+							$('button[class="cri_btn"]').val(cateTest);
 
 							/*
 							 * body 부분 내용을 testData로 수정
 							 */
-
-							/*
-							 * 현재 수정 부분 pom.xml 의 mybatis 업데이트 mybatis 3.4.6 -> 3.5.3 mybatis
-							 * spring 1.3.2 -> 2.0.5 으로 변경후 $('body').html(testData); 추가 하니 됬음
-							 * 변경전 테스트 안해봄 현재 발생한 문재점 기존 데이터가 않보이는 곳에 쌓이는거 같다 페이지 F12 를 눌렀을때
-							 * network 부분에서 느려지는것을 확인
-							 */
-
 						}
 					});
 

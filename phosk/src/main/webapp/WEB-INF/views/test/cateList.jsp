@@ -99,7 +99,7 @@ button {
 		</div>
 		<div class="menueContainer">
 			<div class="manage_con">
-				<button value="${nowPage.nowCate}" id="manage_btn">메뉴관리</button>
+				<button value="${nowPage.nowCate}" type="button" id="manage_btn">메뉴관리</button>
 			</div>
 			<div id="menue_eachform">
 				<c:forEach items='${cateTest}' var='cateTest'>
@@ -142,8 +142,6 @@ button {
 											'click',
 											'button[id="detailMenue_open"]',
 											function(e) {
-												/* 페이지 이동 테스트중 */
-												e.preventDefault();
 												let form = $("#moveForm");
 												var menueName = $(this).attr(
 														'name');
@@ -154,8 +152,6 @@ button {
 												form.attr("action",
 														"/test/detailInfo");
 												form.submit();
-												/* $("#modal").fadeIn(); */
-
 											});
 						});
 		$('#insert_btn').on('click', function() {
@@ -181,18 +177,9 @@ button {
 					console.log(cateTest);
 					$('#moveForm').find('input[name="nowCate"]').val(cateTest);
 					$('#manage_btn').val(cateTest);
-					/* 위에 moveForm 의 단점 카테고리를 변경하지 않을경우 오류가 발생함 */
-					/*$('body').html(testData);*/
 
 					/*
 					 * body 부분 내용을 testData로 수정
-					 */
-
-					/*
-					 * 현재 수정 부분 pom.xml 의 mybatis 업데이트 mybatis 3.4.6 -> 3.5.3 mybatis
-					 * spring 1.3.2 -> 2.0.5 으로 변경후 $('body').html(testData); 추가 하니 됬음
-					 * 변경전 테스트 안해봄 현재 발생한 문재점 기존 데이터가 않보이는 곳에 쌓이는거 같다 페이지 F12 를 눌렀을때
-					 * network 부분에서 느려지는것을 확인
 					 */
 
 				}

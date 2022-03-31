@@ -1,8 +1,10 @@
 package com.teamproject.phosk.branch.menu.vo;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class NowPage {
 	private int nowCate;
 
