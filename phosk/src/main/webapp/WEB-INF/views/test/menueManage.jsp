@@ -254,7 +254,6 @@ button {
 											'click',
 											'button[id="detailMenue_open"]',
 											function(e) {
-												e.preventDefault();
 												let moveForm = $("#moveForm");
 												var menueName = $(this).attr(
 														'name');
@@ -316,6 +315,7 @@ button {
 						alert(checkedbtn.length + '개의 메뉴가 삭제 되었습니다.');
 					}
 					location.reload();
+					/* 오류발견 ajax로 페이지 이동을 시키다보니 현재페이지에서 새로고침이 안됨 */
 				}
 			});
 		}
@@ -336,7 +336,7 @@ button {
 							console.log(cateTest);
 							$('#moveForm').find('input[name="nowCate"]').val(cateTest);
 							$('button[class="cri_btn"]').val(cateTest);
-
+							location.replace('/test/menueManage?nowCate=${nowPage.nowCate}&cateTest=' + cateTest);
 							/*
 							 * body 부분 내용을 testData로 수정
 							 */

@@ -122,7 +122,6 @@ button {
 			</div>
 			<div>
 				<button id="insert_btn">메뉴등록</button>
-				<!-- 메뉴관리 페이지에 옮길 예정 이며 카테고리 값이 없어도.. 게시판처럼 기준 vo객체를 생성후 이용한다면 가능할지도..?-->
 			</div>
 		</div>
 	</div>
@@ -173,10 +172,15 @@ button {
 					cateTest : cateTest
 				},
 				success : function(testData) {
-					document.body.innerHTML = testData;
+					/* document.body.innerHTML = testData; */
 					console.log(cateTest);
 					$('#moveForm').find('input[name="nowCate"]').val(cateTest);
 					$('#manage_btn').val(cateTest);
+					location.replace('/test/cateList?nowCate=${nowPage.nowCate}&cateTest=' + cateTest);
+
+					/* replace 의 단점 기준이 되는 카테고리를 저장할수없음. */
+					
+					/* 내일 등원해서 테스트 할것 ajax가 아닌 moveForm을 이용한 카테고리 메뉴 이동 */
 
 					/*
 					 * body 부분 내용을 testData로 수정
