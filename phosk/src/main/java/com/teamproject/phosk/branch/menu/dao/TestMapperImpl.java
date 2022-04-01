@@ -66,4 +66,14 @@ public class TestMapperImpl implements TestMapper {
 		return session.selectList("menuGetAll", cateTest);
 	}
 
+	@Override
+	public int deleteCategory(CategoryVO cateVO) {
+		return session.delete("deleteCategory", cateVO);
+	}
+
+	@Override
+	public int updateCateName(CategoryVO cateVO) {
+		return session.update("updateCateName", cateVO);
+	}
+
 }

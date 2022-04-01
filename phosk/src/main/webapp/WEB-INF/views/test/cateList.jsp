@@ -11,10 +11,16 @@
 <title>Insert title here</title>
 </head>
 <style>
+body{
+/* overflow: hidden 해야 카테고리 변경시 둠칫둠칫두둠칫 안움직임 */
+	overflow: scroll;
+	display: block;
+}
 div {
 	margin: 0 auto;
 	display: block;
 }
+
 
 .categoryCon, .menueContainer, .menueInfo_container, .category_names {
 	border: 1px solid black;
@@ -49,11 +55,6 @@ button {
 	float: right;
 	height: 100%;
 	overflow: auto;
-}
-
-#insert_btn {
-	width: 100%;
-	margin: 0 auto;
 }
 
 #manage_btn {
@@ -99,7 +100,7 @@ button {
 		</div>
 		<div class="menueContainer">
 			<div class="manage_con">
-				<button id="manage_btn" onclick="manage_btn()">메뉴관리</button>
+				<button value="${nowPage.nowCate}" type="button" id="manage_btn">메뉴관리</button>
 			</div>
 			<div id="menue_eachform">
 				<c:forEach items='${cateTest}' var='cateTest'>
@@ -117,20 +118,16 @@ button {
 							<span class="menue_text menue_info_detail">${cateTest.etc}</span>
 						</div>
 					</div>
-				</c:forEach>
 
-			</div>
-			<div>
-				<button id="insert_btn">메뉴등록</button>
-				<!-- 메뉴관리 페이지에 옮길 예정 이며 카테고리 값이 없어도.. 게시판처럼 기준 vo객체를 생성후 이용한다면 가능할지도..?-->
+				</c:forEach>
+				<!-- 밥먹고와서 해야할부분 해당 카테고리 안에 메뉴가 없을경우 나타낼방법 생각하기 -->
 			</div>
 		</div>
 	</div>
 
 	<form id="moveForm" method="get">
 		<!-- cateTest 라는 name으로 menueManage 페이지 이동시키면 현재 보고있던 카테고리 바로뜰수 있을거 같음 -->
-		
-		<input type="text" name="nowCate" value="${nowCate.categoryNum}"/>
+		<%-- <input type="text" name="nowCate" value="${nowCate.nowCate}"/> --%>
 	</form>
 
 	<script>
@@ -142,8 +139,6 @@ button {
 											'click',
 											'button[id="detailMenue_open"]',
 											function(e) {
-												/* 페이지 이동 테스트중 */
-												e.preventDefault();
 												let form = $("#moveForm");
 												var menueName = $(this).attr(
 														'name');
@@ -154,19 +149,13 @@ button {
 												form.attr("action",
 														"/test/detailInfo");
 												form.submit();
-												/* $("#modal").fadeIn(); */
-
 											});
 						});
-		$('#insert_btn').on('click', function() {
-			window.location.href = "/test/insertMenue";
-		});
-
-		function manage_btn() {
-			alert('실행중');
+		$(document).on("click", "#manage_btn", function() {
+			$('#moveForm').append('<input type="text" name="cateTest" value="' + $(this).val() + '"/>');
 			$('#moveForm').attr('action', '/test/menueManage');
 			$('#moveForm').submit();
-		};
+		});
 		$(document).on("click", "button[class='category_names']", function() {
 			var cateTest = $(this).val();
 			/* console.log(cateTest + " ajax 부분"); */
@@ -177,23 +166,27 @@ button {
 					cateTest : cateTest
 				},
 				success : function(testData) {
-					document.body.innerHTML = testData;
+					/* document.body.innerHTML = testData; */
+					
+					/* body 전체를 수정할경우 단점 */
+					/* 페이징이 안됨, html의 하위 태그 전부 body에 복사되니 style title등 모두 한번더 생성됨 */
 					console.log(cateTest);
-					$('#moveForm').find('input[name="nowCate"]').val(cateTest);
-					/* 위에 moveForm 의 단점 카테고리를 변경하지 않을경우 오류가 발생함 */
-					/*$('body').html(testData);*/
+					$('#manage_btn').val(cateTest);
+					
+					
+					$('#moveForm').append('<input type="text" name="cateTest" value="' + cateTest + '"/>');
+					$('#moveForm').attr('action', '/test/cateList');
+					$('#moveForm').submit();
+					
+					/* form 으로 페이징 할경우 잘작동됨 하지만 페이징 번호와 선택한 카테고리를 get방식으로 다 보내니 url이 지저분해지는 느낌... */
+					/* 해결 방법은...? cateTest 하나로 페이징 할수있나..? */
+					/* 할수있다면 백에서 cateTest의 받아온 값으로 임의적으로 nowCate에 넣었을경우 생기는 문제점은? */
+					
+					/* location.replace('/test/cateList?nowCate=${nowPage.nowCate}&cateTest=' + cateTest); */
 
-					/*
-					 * body 부분 내용을 testData로 수정
-					 */
-
-					/*
-					 * 현재 수정 부분 pom.xml 의 mybatis 업데이트 mybatis 3.4.6 -> 3.5.3 mybatis
-					 * spring 1.3.2 -> 2.0.5 으로 변경후 $('body').html(testData); 추가 하니 됬음
-					 * 변경전 테스트 안해봄 현재 발생한 문재점 기존 데이터가 않보이는 곳에 쌓이는거 같다 페이지 F12 를 눌렀을때
-					 * network 부분에서 느려지는것을 확인
-					 */
-
+					/* replace 의 단점 페이징의 기준이 되는 카테고리를 저장할수없음. */
+					
+					/* 내일 등원해서 테스트 할것 ajax가 아닌 moveForm을 이용한 카테고리 메뉴 이동 */
 				}
 			});
 

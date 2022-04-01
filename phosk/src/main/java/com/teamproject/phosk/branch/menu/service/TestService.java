@@ -26,4 +26,8 @@ public interface TestService {
 	public List<MenueVO> getMenue(String cateTest);
 
 	public List<MenueVO> menuGetAll(String cateTest);
+
+	public int deleteCategory(CategoryVO cateVO);
+
+	public int updateCateName(CategoryVO cateVO);
 }
