@@ -25,5 +25,9 @@ public interface TestMapper {
 
 	List<MenueVO> getMenue(String cateTest);
 
-	List<MenueVO> menuGetAll(String cateTest); 
+	List<MenueVO> menuGetAll(String cateTest);
+
+	int deleteCategory(CategoryVO cateVO);
+
+	int updateCateName(CategoryVO cateVO); 
 }

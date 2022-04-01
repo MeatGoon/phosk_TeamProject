@@ -11,6 +11,12 @@
 <title>Insert title here</title>
 </head>
 <style>
+body {
+	/* overflow: hidden 해야 카테고리 변경시 둠칫둠칫두둠칫 안움직임 */
+	overflow: scroll;
+	display: block;
+}
+
 div {
 	margin: 0 auto;
 	display: block;
@@ -70,6 +76,11 @@ button {
 
 #delCategory_btn, #list_btn {
 	float: right;
+}
+
+#insert_btn {
+	width: 100%;
+	margin: 0 auto;
 }
 
 .menue_text {
@@ -182,7 +193,8 @@ button {
 	<div class="mainContainer">
 		<div class="categoryCon">
 			<div>
-				<button id="add_cate_btn">카테고리 추가</button>
+				<button id="add_cate_btn" value="${nowPage.nowCate}">카테고리
+					추가</button>
 			</div>
 			<div class="categort_btns">
 				<c:forEach items="${cateList}" var="cateList">
@@ -193,17 +205,21 @@ button {
 		</div>
 		<div class="menueContainer">
 			<div class="btnTest">
-				<input type="text" value="카테고리 이름이 들어갈 자리입니다." readonly="readonly" />
-				<button type="button" value="${nowPage.nowCate}"
-					id="modify_cateName" class="cri_btn">수정</button>
-				<button type="button" value="${nowPage.nowCate}"
-					id="list_btn" class="cri_btn">목록이동</button>
-				<button type="button" value="${nowPage.nowCate}"
-					id="delCategory_btn" class="cri_btn">삭제</button>
-				<!-- value의 값은 ajax 혹은 moveForm 이용하여 카테고리 불러올 예정 -->
-				<!-- 페이징의 값을 아이디 하나로 일괄로 지정 가능한가? -->
-
-				* 현재 기능 미구현
+				<form action="/test/updateCateName" method="post" id="modifyForm">
+					<c:forEach var="cateList" items="${cateList}">
+						<c:if test="${cateList.category_num eq nowPage.nowCate}">
+							<input type="text" name="category_name"
+								value='${cateList.category_name}' />
+							<button type="button" value="${nowPage.nowCate}"
+								id="modify_cateName">수정</button>
+						</c:if>
+					</c:forEach>
+					<button type="button" value="${nowPage.nowCate}" id="list_btn">목록이동</button>
+					<button type="button" value="${nowPage.nowCate}"
+						id="delCategory_btn">카테고리 삭제</button>
+					<!-- value의 값은 ajax 혹은 moveForm 이용하여 카테고리 불러올 예정 -->
+					<!-- 페이징의 값을 아이디 하나로 일괄로 지정 가능한가? -->
+				</form>
 			</div>
 			<div class="menue_eachform">
 				<c:forEach items='${cateTest}' var='cateTest'>
@@ -229,23 +245,62 @@ button {
 					</div>
 				</c:forEach>
 			</div>
-			<button id="checked_btn" onclick="deleteChecked();">선택 삭제</button>
+			<div>
+				<button value="${nowPage.nowCate}" id="insert_btn">메뉴등록</button>
+			</div>
+			<div>
+				<button class="del_checked_btn" onclick="deleteChecked()">선택
+					삭제</button>
+				<button class="best_checked_btn" onclick="bestChecked()">인기
+					등록</button>
+			</div>
 		</div>
 	</div>
-	<div id="modal" style="display: none">
-		<div class="modal_content">
-			<button type="button" id="detailMenue_close">모달 창 닫기</button>
-			<h2>모달창 테스트</h2>
-			<p>모달창 정상 작동</p>
-			<div class="input_wrap"></div>
-		</div>
-		<div class="modal_layer"></div>
-	</div>
-	<form id="moveForm" method="post">
+	<form id="moveForm">
 		<!-- 추후 게시판처럼 기준vo 객체를 생성한다면 사용하게될 form -->
-		<input type="text" name="nowCate" value="${nowPage.nowCate}" />
+		<%-- <input type="text" name="nowCate" value="${nowPage.nowCate}" /> --%>
 	</form>
 	<script>
+		let moveForm = $("#moveForm");
+		$('#insert_btn').on(
+				'click',
+				function() {
+					moveForm.attr('method', 'get');
+					moveForm.attr('action', '/test/insertMenue');
+					moveForm.append('<input type="text" name="nowCate" value="'
+							+ $(this).val() + '"/>');
+					moveForm.submit();
+				});
+		$('#modify_cateName')
+				.on(
+						'click',
+						function() {
+							let form = $('#modifyForm');
+							form
+									.append('<input type="text" name="category_num" value="'
+											+ $(this).val() + '"/>');
+							form.submit();
+						});
+		$('#delCategory_btn')
+				.on(
+						'click',
+						function() {
+							moveForm.attr('method', 'post');
+							if (confirm('확인시 하위 메뉴와 같이 삭제됩니다') == true) {
+								moveForm.attr('action', '/test/deleteCategory');
+								moveForm
+										.append('<input type="text" name="category_num" value="'
+												+ $(this).val() + '"/>');
+								moveForm.submit();
+							} else {
+								return;
+							}
+							moveForm.attr('action', '/test/deleteCategory');
+							moveForm
+									.append('<input type="text" name="category_num" value="'
+											+ $(this).val() + '"/>');
+							moveForm.submit();
+						});
 		$(document)
 				.ready(
 						function() {
@@ -254,7 +309,7 @@ button {
 											'click',
 											'button[id="detailMenue_open"]',
 											function(e) {
-												let moveForm = $("#moveForm");
+
 												var menueName = $(this).attr(
 														'name');
 												var cateNum = $(this).val();
@@ -268,31 +323,33 @@ button {
 
 											});
 						});
-
-		$('#manage_btn').on('click', function() {
-			window.location.href = "/test/menueManage"
-		});
-
-		$("#detailMenue_close").click(function() {
-			$("#modal").fadeOut();
-		});
-		$(document).on("click", "#list_btn", function() {
-			console.log('test');
-			$('#moveForm').attr('method', 'get');
-			$('#moveForm').append('<input type="text" name="cateTest" value="' + $(this).val() + '"/>');
-			$('#moveForm').attr('action', '/test/cateList');
-			$('#moveForm').submit();
-		});
+		/* 수정페이지로 이동하기 */
+		$(document)
+				.on(
+						"click",
+						"#list_btn",
+						function() {
+							console.log('test');
+							moveForm.attr('method', 'get');
+							moveForm
+									.append('<input type="text" name="cateTest" value="'
+											+ $(this).val() + '"/>');
+							moveForm.attr('action', '/test/cateList');
+							moveForm.submit();
+						});
 
 		$('#add_cate_btn')
 				.on(
 						'click',
 						function() {
-							let form = $('#moveForm');
-							form.attr('action', '/test/insrtCategory');
-							form
+							moveForm.attr('method', 'post');
+							moveForm.attr('action', '/test/insrtCategory');
+							moveForm
+									.append('<input type="hidden" name="nowCate" value="'
+											+ $(this).val() + '"/>');
+							moveForm
 									.append("<input type='hidden' name='category_name' value='새 카테고리'>");
-							form.submit();
+							moveForm.submit();
 						});
 
 		function deleteChecked() {
@@ -319,31 +376,42 @@ button {
 				}
 			});
 		}
-		$(document).on(
-				"click",
-				"button[class='category_names']",
-				function() {
-					var cateTest = $(this).val();
-					/* console.log(cateTest + " ajax 부분"); */
-					$.ajax({
-						url : "/test/menueManage",
-						type : "GET",
-						data : {
-							cateTest : cateTest
-						},
-						success : function(testData) {
-							document.body.innerHTML = testData;
-							console.log(cateTest);
-							$('#moveForm').find('input[name="nowCate"]').val(cateTest);
-							$('button[class="cri_btn"]').val(cateTest);
-							location.replace('/test/menueManage?nowCate=${nowPage.nowCate}&cateTest=' + cateTest);
-							/*
-							 * body 부분 내용을 testData로 수정
-							 */
-						}
-					});
+		$(document)
+				.on(
+						"click",
+						"button[class='category_names']",
+						function() {
+							var cateTest = $(this).val();
+							/* console.log(cateTest + " ajax 부분"); */
+							$
+									.ajax({
+										url : "/test/menueManage",
+										type : "GET",
+										data : {
+											cateTest : cateTest
+										},
+										success : function(testData) {
+											/* document.body.innerHTML = testData; */
+											console.log(cateTest);
+											moveForm.find(
+													'input[name="nowCate"]')
+													.val(cateTest);
+											/* location.replace('/test/menueManage?nowCate=${nowPage.nowCate}&cateTest=' + cateTest); */
+											/*  */
+											moveForm.attr('method', 'get');
+											moveForm.attr('action',
+													'/test/menueManage');
+											moveForm
+													.append('<input type="text" name="cateTest" value="' + cateTest + '"/>');
+											moveForm.submit();
 
-				});
+											/*
+											 * body 부분 내용을 testData로 수정
+											 */
+										}
+									});
+
+						});
 	</script>
 </body>
 </html>

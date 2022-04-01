@@ -68,4 +68,14 @@ public class TestServiceImpl implements TestService {
 		return testMapper.menuGetAll(cateTest);
 	}
 
+	@Override
+	public int deleteCategory(CategoryVO cateVO) {
+		return testMapper.deleteCategory(cateVO);
+	}
+
+	@Override
+	public int updateCateName(CategoryVO cateVO) {
+		return testMapper.updateCateName(cateVO);
+	}
+
 }

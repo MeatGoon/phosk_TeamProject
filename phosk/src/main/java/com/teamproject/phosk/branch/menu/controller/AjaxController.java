@@ -30,19 +30,26 @@ public class AjaxController {
 	private TestService testService;
 
 	@GetMapping("/cateList")
-	public void cateList(Model model, HttpServletRequest request, NowPage nowCate) {
+	public void cateList(Model model, HttpServletRequest request, NowPage nowPage) {
 		log.info("cate List .....");
 		String cateTest = request.getParameter("cateTest");
 		List<CategoryVO> cateList = testService.cateList();
+		if (cateTest != null) {
+			nowPage.setNowCate(Integer.parseInt(cateTest));
+			model.addAttribute("nowPage", nowPage);
+		}
 		model.addAttribute("cateTest", testService.getMenue(cateTest));
 		model.addAttribute("cateList", cateList);
-		model.addAttribute("nowCate", nowCate);
+
 	}
 
 	@GetMapping("/menueManage") /* 카테고리 숫자 받아서 반환할거 필요할거같음 */
 	public void menueManage(Model model, HttpServletRequest request, NowPage nowPage) {
 		log.info("menuManage List .....");
 		String cateTest = request.getParameter("cateTest");
+		if (cateTest != null) {
+			nowPage.setNowCate(Integer.parseInt(cateTest));
+		}
 		List<CategoryVO> cateList = testService.cateList();
 		model.addAttribute("cateList", cateList);
 		model.addAttribute("cateTest", testService.menuGetAll(cateTest));
@@ -54,11 +61,6 @@ public class AjaxController {
 		model.addAttribute("meList", testService.detailInfo(menue_name));
 	}
 
-	/*
-	 * @GetMapping("/getMenue") public void getMenue(int category_num, Model model)
-	 * { model.addAttribute("menues", category_num); } 이부분은 form으로 이동할때 사용할 메서드였음
-	 */
-
 	@PostMapping("/modify")
 	public String menueModify(MenueVO menueVO, RedirectAttributes rttr) {
 		testService.modify(menueVO);
@@ -67,26 +69,29 @@ public class AjaxController {
 	}
 
 	@PostMapping("/delete")
-	public String menueDelete(MenueVO menueVO, RedirectAttributes rttr) {
+	public String menueDelete(MenueVO menueVO, RedirectAttributes rttr, NowPage nowPage) {
 		testService.delete(menueVO);
+		int nowCate = nowPage.getNowCate();
 		rttr.addFlashAttribute("result", "delete success");
-		return "redirect:/test/cateList";
+		return "redirect:/test/cateList" + nowCate;
 	}
 
 	@PostMapping("/deleteChk")
-	public String menueDelete(HttpServletRequest request) {
+	public String menueDelete(HttpServletRequest request, NowPage nowPage) {
 		String[] ajaxData = request.getParameterValues("checkedbtn");
+		int nowCate = nowPage.getNowCate();
 		for (int i = 0; i < ajaxData.length; i++) {
 			testService.chkDel(ajaxData[i]);
 		}
-		return "redirect:/test/menueManage";
+		return "redirect:/test/menueManage?cateTest="+ nowCate;
 	}
 
 	@GetMapping("/insertMenue")
-	public void insertMenue(Model model) {
+	public void insertMenue(Model model, NowPage nowPage) {
 		log.info("insertMenue List .....");
 		List<CategoryVO> cateList = testService.cateList();
 		model.addAttribute("cateList", cateList);
+		model.addAttribute("nowPage", nowPage);
 	}
 
 	@PostMapping("/insertMenue")
@@ -97,17 +102,23 @@ public class AjaxController {
 	}
 
 	@PostMapping("/insrtCategory")
-	public String insrtCategory(CategoryVO categoryVO, RedirectAttributes rttr) {
+	public String insrtCategory(CategoryVO categoryVO, int nowCate , RedirectAttributes rttr, NowPage nowPage) {
 		testService.insrtCategory(categoryVO);
-		rttr.addFlashAttribute("result", "insert success");
+		return "redirect:/test/menueManage?cateTest=" + nowCate;
+	}
+	
+	@PostMapping("/updateCateName")
+	public String updateCateName(int category_num, CategoryVO cateVO, RedirectAttributes rttr) {
+		testService.updateCateName(cateVO);
+		rttr.addFlashAttribute("result", "UpCateName success");
+		return "redirect:/test/menueManage?cateTest=" + category_num;
+	}
+	
+	
+	@PostMapping("/deleteCategory")
+	public String deleteCategory(CategoryVO cateVO, RedirectAttributes rttr) {
+		testService.deleteCategory(cateVO);
+		rttr.addFlashAttribute("result", "delCate success");
 		return "redirect:/test/menueManage";
 	}
-
-	/*
-	 * @GetMapping("/getMenue") public void getMenue(Model model, HttpServletRequest
-	 * request) { String cateTest = request.getParameter("cateTest");
-	 * model.addAttribute("cateTest", testService.getMenue(cateTest));
-	 * System.out.println(cateTest + " 컨트롤러의 값"); }
-	 */
-
 }

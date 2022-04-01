@@ -15,9 +15,16 @@
 		<form id="/test/insertForm" method="post">
 			<div>
 				<select name="category_num">
-					<option selected="selected" value="">카테고리 선택</option>
 					<c:forEach var="cateList" items="${cateList}">
-						<option value="${cateList.category_num}">${cateList.category_name}</option>
+						<c:choose>
+							<c:when test="${cateList.category_num eq nowPage.nowCate}">
+								<option selected="selected" value="${cateList.category_num}">${cateList.category_name}</option>
+							</c:when>
+							<c:otherwise>
+								<option value="${cateList.category_num}">${cateList.category_name}</option>
+							</c:otherwise>
+						</c:choose>
+
 					</c:forEach>
 				</select>
 			</div>
@@ -39,14 +46,14 @@
 			window.location.href = '/test/cateList'
 		});
 		$("#insert_btn").on('click', function() {
-				var text = $("select[name='category_num']").val();
-				var result = 0 || null || "";
-				if(text == result){
-					alert("카테고리를 선택해주시기 바랍니다.")
-				} else {
-					$("#insertForm").attr('action', '/test/insertMenue');
-					$("#insertForm").submit();
-				}
+			var text = $("select[name='category_num']").val();
+			var result = 0 || null || "";
+			if (text == result) {
+				alert("카테고리를 선택해주시기 바랍니다.")
+			} else {
+				$("#insertForm").attr('action', '/test/insertMenue');
+				$("#insertForm").submit();
+			}
 		});
 	</script>
 </body>

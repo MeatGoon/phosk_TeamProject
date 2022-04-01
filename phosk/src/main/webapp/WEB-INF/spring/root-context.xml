@@ -26,13 +26,13 @@
 	<!-- Mybatis configuration -->
 	<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
 		<property name="dataSource" ref="dataSource"></property>
-		<property name="mapperLocations" value="classpath:com/ajaxstudy/meatgoon/mapper/query/*.xml"></property> 
-		<property name="configLocation" value="classpath:com/ajaxstudy/meatgoon/mapper/config/mybatis-config.xml"></property>
+		<property name="mapperLocations" value="classpath:com/teamproject/phosk/branch/menu/mapper/query/*.xml"></property> 
+		<property name="configLocation" value="classpath:com/teamproject/phosk/branch/menu/mapper/config/mybatis-config.xml"></property>
 	</bean>
 	
 	<bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSession" destroy-method="clearCache">
 		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
 	</bean>
 
-	<context:component-scan base-package="com.ajaxstudy.meatgoon"></context:component-scan>
+	<context:component-scan base-package="com.teamproject.phosk"></context:component-scan>
 </beans>
