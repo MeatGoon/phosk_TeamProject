@@ -2,9 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ajaxstudy.meatgoon.mapper.TestMapper">
+<mapper namespace="com.teamproject.phosk.branch.menu.mapper.Test">
 	<select id="cateList" resultType="cateVO">
 		select * from ajaxcategory
+		order by category_num asc
 	</select>
 	<select id="meList" resultType="meVO">
 		select * from ajaxmenue
@@ -29,7 +30,7 @@
 		insert into ajaxcategory values(SEQ_CATE.nextval,
 		#{category_name})
 	</insert>
-	<select id="getMenue" resultType="meVO" parameterType="String">
+	<select id="getMenue" resultType="meVO">
 		select * from ajaxmenue
 		<choose>
 			<when test="category_num != null">
@@ -41,7 +42,28 @@
 			</otherwise>
 		</choose>
 	</select>
-	<select id="menuGetAll">
-		select a.category_num, a.category_name, b.menue_price, b.etc from ajaxcategory a, ajaxmenue b where a.category_num = b.category_num AND a.category_num = #{cateTest}
+	<select id="menuGetAll" resultType="allVO">
+		select a.category_num,
+		a.category_name, b.menue_name, b.menue_price,
+		b.etc from ajaxcategory
+		a, ajaxmenue b where a.category_num =
+		b.category_num AND
+		<choose>
+			<when test="cateTest != null">
+				a.category_num = #{cateTest}
+			</when>
+			<otherwise>
+				a.category_num = 0
+			</otherwise>
+		</choose>
+
 	</select>
+	<delete id="deleteCategory">
+		delete ajaxcategory WHERE category_num =
+		#{category_num}
+	</delete>
+	
+	<update id="updateCateName"> <!-- ajax로? reload로? -->
+		update ajaxcategory set category_name = #{category_name} where category_num = #{category_num}
+	</update>
 </mapper>
