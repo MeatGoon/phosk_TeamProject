@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.teamproject.phosk.branch.menu.dao.itemDAOImpl">
+	<select id="cateList" resultType="cateVO">
+		select * from ajaxcategory
+		order by category_num asc
+	</select>
+	<select id="meList" resultType="itemVO">
+		select * from ajaxmenue
+	</select>
+	<select id="detailInfo" resultType="itemVO">
+		select * from ajaxmenue where
+		menue_name = #{menue_name}
+	</select>
+	<update id="menueModify"> <!-- 조인처리해야 함.. -->
+		update phosk_item set item_num = #{test_menue_name},
+		menue_price = #{menue_price}, etc = #{etc} where menue_name =
+		#{menue_name}
+	</update>
+	<delete id="menueDelete">
+		delete ajaxmenue where menue_name = #{menue_name}
+	</delete>
+	<insert id="menueInsert">
+		insert into ajaxmenue values(#{category_num},
+		#{menue_name}, #{menue_price}, #{etc})
+	</insert>
+	<insert id="insrtCategory">
+		insert into ajaxcategory values(SEQ_CATE.nextval,
+		#{category_name})
+	</insert>
+	<select id="getMenue" resultType="itemVO">
+		select * from ajaxmenue
+		<choose>
+			<when test="category_num != null">
+				where category_num = #{cateTest}
+			</when>
+			<!-- 미선택시 인기메뉴 자동선택 -->
+			<otherwise>
+				where category_num = 0
+			</otherwise>
+		</choose>
+	</select>
+	<select id="menuGetAll" resultType="itemInfo">
+		select a.category_num,
+		a.category_name, b.menue_name, b.menue_price,
+		b.etc from ajaxcategory
+		a, ajaxmenue b where a.category_num =
+		b.category_num AND
+		<choose>
+			<when test="cateTest != null">
+				a.category_num = #{cateTest}
+			</when>
+			<otherwise>
+				a.category_num = 0
+			</otherwise>
+		</choose>
+
+	</select>
+	<delete id="deleteCategory">
+		delete ajaxcategory WHERE category_num =
+		#{category_num}
+	</delete>
+	
+	<update id="updateCateName">
+		update ajaxcategory set category_name = #{category_name} where category_num = #{category_num}
+	</update>
+	<delete id="deleteBestMenu">
+		delete ajaxmenue where category_num = 0 AND menue_name = #{menue_name}
+	</delete>
+	<insert id="addBestMenu">
+		insert into ajaxmenue SELECT 0,menue_name,menue_price,etc FROM ajaxmenue WHERE category_num != 0 AND menue_name = #{menue_name}
+	</insert>
+</mapper>
